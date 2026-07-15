@@ -99,6 +99,30 @@ app.get('/api/roblox/avatar/:username', async (c) => {
   }
 });
 
+// Direct image redirect for UI elements like Live Bets
+app.get('/api/roblox/avatar-image/:username', async (c) => {
+  const username = c.req.param('username');
+  try {
+    const userRes = await fetch('https://users.roblox.com/v1/usernames/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usernames: [username], excludeBannedUsers: false })
+    });
+    const userData = await userRes.json();
+    if (userData.data && userData.data.length > 0) {
+      const userId = userData.data[0].id;
+      const thumbRes = await fetch(
+        `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=false`
+      );
+      const thumbData = await thumbRes.json();
+      if (thumbData.data?.[0]?.imageUrl) {
+        return c.redirect(thumbData.data[0].imageUrl);
+      }
+    }
+  } catch (e) {}
+  return c.redirect(`https://api.dicebear.com/9.x/avataaars/svg?seed=${username}&backgroundColor=transparent`);
+});
+
 // ═══════════════════════════════════════
 // World Cup scoreboard proxy
 // ═══════════════════════════════════════

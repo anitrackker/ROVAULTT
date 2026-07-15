@@ -156,7 +156,7 @@ const LiveBetsTable = () => {
                     <td className="lb-username">
                       <div className="lb-flex-cell">
                         <img 
-                          src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
+                          src={bet.avatarUrl || `${API_URL}/roblox/avatar-image/${encodeURIComponent(bet.username)}`} 
                           alt="avatar" 
                           className="lb-avatar" 
                         />
