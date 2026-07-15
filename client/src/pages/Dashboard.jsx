@@ -153,20 +153,26 @@ const LiveBetsTable = () => {
                       transition={{ duration: 0.3 }}
                     >
                       <td className="lb-game">
-                        <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
-                        {bet.game}
+                        <div className="lb-flex-cell">
+                          <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
+                          {bet.game}
+                        </div>
                       </td>
                       <td className="lb-username">
-                        <img 
-                          src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
-                          alt="avatar" 
-                          className="lb-avatar" 
-                        />
-                        <span>{bet.username}</span>
+                        <div className="lb-flex-cell">
+                          <img 
+                            src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
+                            alt="avatar" 
+                            className="lb-avatar" 
+                          />
+                          <span className="lb-truncate">{bet.username}</span>
+                        </div>
                       </td>
                       <td className="lb-amount">
-                        <VaultIcon size={14} color="#818ebb" />
-                        <span>{formatAmount(bet.amount)}</span>
+                        <div className="lb-flex-cell">
+                          <VaultIcon size={14} color="#818ebb" />
+                          <span>{formatAmount(bet.amount)}</span>
+                        </div>
                       </td>
                       <td className="lb-multiplier">
                         <span className={multiplier >= 2 ? 'lb-mult-high' : ''}>
@@ -174,10 +180,12 @@ const LiveBetsTable = () => {
                         </span>
                       </td>
                       <td className={`lb-payout ${isWin ? 'lb-payout-win' : 'lb-payout-loss'}`}>
-                        <VaultIcon size={14} color={isWin ? '#05d3dd' : 'rgba(255,255,255,0.4)'} />
-                        <span>
-                          {isWin ? '+' : ''}{formatAmount(bet.potentialPayout)}
-                        </span>
+                        <div className="lb-flex-cell">
+                          <VaultIcon size={14} color={isWin ? '#05d3dd' : 'rgba(255,255,255,0.4)'} />
+                          <span>
+                            {isWin ? '+' : ''}{formatAmount(bet.potentialPayout)}
+                          </span>
+                        </div>
                       </td>
                       <td className="lb-time">{formatTime(bet.time)}</td>
                     </motion.tr>

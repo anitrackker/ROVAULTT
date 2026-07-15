@@ -334,9 +334,6 @@
 
 /* Game column */
 .lb-game {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   font-weight: 500;
 }
 
@@ -350,12 +347,9 @@
 .lb-username {
   font-weight: 600;
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.lb-username span {
+.lb-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -371,9 +365,6 @@
 
 /* Amount */
 .lb-amount {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-weight: 700;
 }
 
@@ -390,9 +381,6 @@
 
 /* Payout */
 .lb-payout {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-weight: 700;
 }
 
@@ -416,4 +404,11 @@
   padding: 40px 20px;
   color: var(--text-muted);
   font-size: 15px;
+}
+
+/* Flex wrapper inside TD to prevent table collapse */
+.lb-flex-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
