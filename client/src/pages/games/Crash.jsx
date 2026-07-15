@@ -69,9 +69,9 @@ export const Crash = () => {
 
     ctx.clearRect(0, 0, cw, ch);
 
-    // Coordinate Math
-    const x = elapsed * 0.05;
-    const y = (mult - 1) * 100;
+    // Coordinate Math - Steeper visual curve
+    const x = Math.pow(elapsed, 0.9) * 0.08;
+    const y = Math.pow(mult - 1, 1.4) * 80;
     
     // Push to path if rising
     if (!isCrashed) {
@@ -89,22 +89,8 @@ export const Crash = () => {
     const paddingX = 40;
     const paddingY = 40;
 
-    // Draw the glowing curve
-    if (pathRef.current.length > 0) {
-      ctx.beginPath();
-      ctx.moveTo(paddingX, ch - paddingY);
-      for (const pt of pathRef.current) {
-        ctx.lineTo(paddingX + (pt.x * scaleX), ch - paddingY - (pt.y * scaleY));
-      }
-      ctx.strokeStyle = isCrashed ? '#ef4444' : '#ffffff';
-      ctx.lineWidth = 4;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.shadowColor = isCrashed ? '#ef4444' : (mult >= 10 ? '#ef4444' : mult >= 5 ? '#facc15' : '#00e676');
-      ctx.shadowBlur = 15;
-      ctx.stroke();
-      ctx.shadowBlur = 0; // reset
-    }
+    // The thick glowing curve is removed as requested by the user.
+    // We just keep the camera scaling math and skip drawing the line.
 
     // Calculate current pixel position for rocket
     const rx = paddingX + (x * scaleX);
