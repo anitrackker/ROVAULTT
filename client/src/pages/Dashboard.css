@@ -322,6 +322,15 @@
   vertical-align: middle;
 }
 
+.lb-row {
+  animation: lb-row-fade-in 0.3s ease-out forwards;
+}
+
+@keyframes lb-row-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* New row highlight */
 .lb-row-new {
   animation: lb-row-flash 2s ease-out;

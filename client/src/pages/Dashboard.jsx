@@ -132,67 +132,61 @@ const LiveBetsTable = () => {
             </tr>
           </thead>
           <tbody>
-            <AnimatePresence initial={false}>
-              {bets.length === 0 ? (
-                <tr className="lb-empty-row">
-                  <td colSpan="6">No bets yet — be the first!</td>
-                </tr>
-              ) : (
-                bets.map((bet) => {
-                  const multiplier = bet.amount > 0 ? (bet.potentialPayout / bet.amount) : 0;
-                  const isWin = bet.potentialPayout > 0;
-                  const isNew = newIds.has(bet.id);
+            {bets.length === 0 ? (
+              <tr className="lb-empty-row">
+                <td colSpan="6">No bets yet — be the first!</td>
+              </tr>
+            ) : (
+              bets.map((bet) => {
+                const multiplier = bet.amount > 0 ? (bet.potentialPayout / bet.amount) : 0;
+                const isWin = bet.potentialPayout > 0;
+                const isNew = newIds.has(bet.id);
 
-                  return (
-                    <motion.tr
-                      key={bet.id}
-                      className={`lb-row${isNew ? ' lb-row-new' : ''}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 20 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <td className="lb-game">
-                        <div className="lb-flex-cell">
-                          <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
-                          {bet.game}
-                        </div>
-                      </td>
-                      <td className="lb-username">
-                        <div className="lb-flex-cell">
-                          <img 
-                            src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
-                            alt="avatar" 
-                            className="lb-avatar" 
-                          />
-                          <span className="lb-truncate">{bet.username}</span>
-                        </div>
-                      </td>
-                      <td className="lb-amount">
-                        <div className="lb-flex-cell">
-                          <VaultIcon size={14} color="#818ebb" />
-                          <span>{formatAmount(bet.amount)}</span>
-                        </div>
-                      </td>
-                      <td className="lb-multiplier">
-                        <span className={multiplier >= 2 ? 'lb-mult-high' : ''}>
-                          x{multiplier.toFixed(2)}
+                return (
+                  <tr
+                    key={bet.id}
+                    className={`lb-row${isNew ? ' lb-row-new' : ''}`}
+                  >
+                    <td className="lb-game">
+                      <div className="lb-flex-cell">
+                        <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
+                        {bet.game}
+                      </div>
+                    </td>
+                    <td className="lb-username">
+                      <div className="lb-flex-cell">
+                        <img 
+                          src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
+                          alt="avatar" 
+                          className="lb-avatar" 
+                        />
+                        <span className="lb-truncate">{bet.username}</span>
+                      </div>
+                    </td>
+                    <td className="lb-amount">
+                      <div className="lb-flex-cell">
+                        <VaultIcon size={14} color="#818ebb" />
+                        <span>{formatAmount(bet.amount)}</span>
+                      </div>
+                    </td>
+                    <td className="lb-multiplier">
+                      <span className={multiplier >= 2 ? 'lb-mult-high' : ''}>
+                        x{multiplier.toFixed(2)}
+                      </span>
+                    </td>
+                    <td className={`lb-payout ${isWin ? 'lb-payout-win' : 'lb-payout-loss'}`}>
+                      <div className="lb-flex-cell">
+                        <VaultIcon size={14} color={isWin ? '#05d3dd' : 'rgba(255,255,255,0.4)'} />
+                        <span>
+                          {isWin ? '+' : ''}{formatAmount(bet.potentialPayout)}
                         </span>
-                      </td>
-                      <td className={`lb-payout ${isWin ? 'lb-payout-win' : 'lb-payout-loss'}`}>
-                        <div className="lb-flex-cell">
-                          <VaultIcon size={14} color={isWin ? '#05d3dd' : 'rgba(255,255,255,0.4)'} />
-                          <span>
-                            {isWin ? '+' : ''}{formatAmount(bet.potentialPayout)}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="lb-time">{formatTime(bet.time)}</td>
-                    </motion.tr>
-                  );
-                })
-              )}
-            </AnimatePresence>
+                      </div>
+                    </td>
+                    <td className="lb-time">{formatTime(bet.time)}</td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
