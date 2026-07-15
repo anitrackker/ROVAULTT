@@ -6,6 +6,7 @@ import { VaultIcon } from '../VaultIcon';
 import { supabase } from '../../lib/supabase';
 import { ROBLOX_PLAYERS } from '../../data/usernames';
 import { ChatProfileModal } from './ChatProfileModal';
+import { Link } from 'react-router-dom';
 import './RightSidebar.css';
 
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -286,41 +287,7 @@ export const RightSidebar = () => {
         </form>
       </div>
 
-      {/* LIVE FEED */}
-      <div className="widget-box">
-        <div className="widget-header">
-          <span style={{ fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Activity size={18} color="#3b82f6" /> Live Feed
-          </span>
-        </div>
-        <div className="live-activity-list" style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '10px' }}>
-          <AnimatePresence initial={false}>
-            {liveActivity.length === 0 && <span style={{ color: '#5d6b8b', fontSize: '12px' }}>Waiting for activity...</span>}
-            {liveActivity.map((act) => (
-              <motion.div 
-                key={act.id}
-                initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="activity-row"
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '8px', borderRadius: '8px', fontSize: '12px' }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                   <img src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${act.player}&backgroundColor=transparent`} style={{ width: '20px', height: '20px', borderRadius: '50%' }} />
-                   <span style={{ fontWeight: 600, color: '#8b9cc7' }}>{act.player}</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ color: '#5d6b8b', fontSize: '10px', textTransform: 'uppercase' }}>{act.game}</span>
-                  <span style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', color: act.isWin ? 'var(--color-win-soft)' : 'var(--color-lose-soft)' }}>
-                    <VaultIcon size={12} color={act.isWin ? 'var(--color-win-soft)' : 'var(--color-lose-soft)'} />
-                    {formatPts(act.amount)}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
-      </div>
+
 
       {/* LEADERBOARD */}
       <LiveLeaderboard />
@@ -333,7 +300,7 @@ export const RightSidebar = () => {
           </span>
         </div>
         <p className="vip-text">Exclusive rewards & benefits for our VIP members.</p>
-        <a href="#" className="vip-link">Join Now →</a>
+        <Link to="/vip" className="vip-link">Join Now →</Link>
       </div>
 
     </aside>

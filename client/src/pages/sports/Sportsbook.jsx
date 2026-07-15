@@ -547,17 +547,18 @@ export const Sportsbook = () => {
         setMatches(parsed);
       }
 
-      if (selectedMatch) {
+      setSelectedMatch(prev => {
+        if (!prev) return null;
         const allMatches = [...parsed, ...parsedWc];
-        const updated = allMatches.find(m => m.id === selectedMatch.id);
-        if (updated) setSelectedMatch(updated);
-      }
+        const updated = allMatches.find(m => m.id === prev.id);
+        return updated || prev;
+      });
     } catch (e) {
       console.error("Failed to fetch Polymarket data:", e);
     } finally {
       setLoading(false);
     }
-  }, [selectedMatch]);
+  }, []);
 
   useEffect(() => {
     fetchMatches();
