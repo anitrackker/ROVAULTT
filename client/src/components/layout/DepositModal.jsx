@@ -23,9 +23,9 @@ const RealisticWithdrawAnimation = ({ netCrypto, symbol, address }) => {
     let hash = '0x';
     for (let i = 0; i < 40; i++) hash += chars[Math.floor(Math.random() * 16)];
 
-    const delay1 = 1200 + Math.random() * 800;
-    const delay2 = delay1 + 1500 + Math.random() * 1200;
-    const delay3 = delay2 + 2500 + Math.random() * 2000;
+    const delay1 = 2000 + Math.random() * 1500;
+    const delay2 = delay1 + 2500 + Math.random() * 2000;
+    const delay3 = delay2 + 3500 + Math.random() * 2500;
 
     const t1 = setTimeout(() => {
       setTxHash(hash);
@@ -646,7 +646,7 @@ const DefaultWithdraw = ({
           address: address ? `${address.slice(0,8)}…${address.slice(-6)}` : '—',
         });
         setDefState('done');
-      }, 8500);
+      }, 14500);
     }
   };
 
