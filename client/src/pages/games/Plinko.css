@@ -1,0 +1,110 @@
+/* ═══════════════════════════════════════
+   RoVault Premium Plinko Styling
+   ═══════════════════════════════════════ */
+
+.plinko-viewport {
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 30%, #151b3d 0%, #0b0e1f 100%) !important;
+  overflow: hidden;
+}
+
+.plinko-game-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #8b9cc7;
+  letter-spacing: 0.5px;
+}
+
+.plinko-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  padding: 0;
+}
+
+.plinko-canvas {
+  /* Fill the entire content area; JS sets the pixel dimensions to match */
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ─── Rows selector ─── */
+.rows-select-row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.rows-btn {
+  flex: 1;
+  background: #202945;
+  border: none;
+  color: #8b9cc7;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+.rows-btn:hover {
+  background: #2b385e;
+  color: white;
+}
+.rows-btn.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* ─── Last Result ─── */
+.plinko-last-result {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+}
+.plinko-last-result.win {
+  background: rgba(0, 230, 118, 0.1);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  color: #00e676;
+}
+.plinko-last-result.win span {
+  font-size: 20px;
+}
+.plinko-last-result.loss {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #ff4757;
+}
+.plinko-last-result.loss span {
+  font-size: 20px;
+}
+
+/* ─── History Tags ─── */
+.plinko-history {
+  margin-top: 12px;
+}
+
+.plinko-history-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.plinko-htag {
+  color: white;
+  font-weight: 800;
+  font-size: 10px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}

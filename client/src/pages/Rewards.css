@@ -1,0 +1,191 @@
+.rewards-page {
+  padding: 40px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rewards-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.rewards-header h1 {
+  font-size: 42px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.rewards-header p {
+  color: #8b9cc7;
+  font-size: 18px;
+}
+
+/* Vault Section */
+.vault-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+  padding: 60px 20px;
+  border-radius: 24px;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.vault-graphic {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.vault-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.3) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.vault-icon-svg {
+  width: 180px;
+  height: 180px;
+  z-index: 2;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.vault-graphic:hover:not(.disabled) .vault-icon-svg {
+  transform: scale(1.05) translateY(-10px);
+  filter: drop-shadow(0 30px 40px rgba(59, 130, 246, 0.4));
+}
+
+.vault-graphic.disabled .vault-icon-svg {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
+.vault-status {
+  text-align: center;
+  z-index: 2;
+}
+
+.vault-status h2 {
+  font-size: 28px;
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.vault-status p {
+  color: #8b9cc7;
+  font-size: 15px;
+}
+
+.vault-timer {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ef4444;
+  background: rgba(0,0,0,0.4);
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-top: 15px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Other Rewards Grid */
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.reward-card {
+  background: rgba(20, 25, 40, 0.6);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
+
+.rc-icon {
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: #facc15;
+}
+
+.rc-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.rc-desc {
+  color: #8b9cc7;
+  font-size: 14px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.rc-progress {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.rc-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+.rc-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.rc-btn:hover:not(:disabled) {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.rc-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,237 @@
+/* Shared Games CSS to match user's custom screenshot aesthetic */
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  height: calc(100vh - var(--topbar-h) - 40px);
+  min-height: 100%;
+}
+
+/* Sidebar Control Panel */
+.game-control-panel {
+  background: #151b2e;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel-tabs {
+  display: flex;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.panel-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.panel-tab.active {
+  background: #202945;
+  color: white;
+}
+
+/* Input Styles */
+.ctrl-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ctrl-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5d6b8b;
+  text-transform: uppercase;
+}
+
+/* ── Input wrap: never let buttons overflow the panel ── */
+.ctrl-input-wrap {
+  display: flex;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid #202945;
+  border-radius: 8px;
+  align-items: center;
+  padding: 0 8px 0 12px;
+  min-width: 0;          /* allow flex shrink */
+  overflow: hidden;      /* clip children to border-radius */
+}
+
+.ctrl-input-wrap input {
+  flex: 1;
+  min-width: 0;          /* critical: allows the input to shrink */
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 12px 6px;
+  outline: none;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.quick-btn {
+  background: #202945;
+  border: none;
+  color: white;
+  padding: 6px 9px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 4px;
+  flex-shrink: 0;        /* never let the button collapse */
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.quick-btn:hover {
+  background: #2b385e;
+}
+
+/* Primary Game Submit Button */
+.btn-game-submit {
+  background: #3b82f6; /* Blue button from screenshot */
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+.btn-game-submit:hover {
+  background: #2563eb;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+.btn-game-submit:active {
+  transform: translateY(1px);
+}
+
+/* Themed Game Board */
+.game-viewport {
+  position: relative;
+  background: #151b2e;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewport-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.viewport-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Currency symbol ── */
+.currency-symbol {
+  font-weight: 700;
+  color: var(--accent-green);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 2px;
+}
+
+/* ── Cashout button variant ── */
+.btn-game-submit.btn-cashout {
+  background: linear-gradient(135deg, #00e676, #00c853);
+  color: #000;
+  box-shadow: 0 4px 14px rgba(0, 230, 118, 0.35);
+}
+.btn-game-submit.btn-cashout:hover {
+  box-shadow: 0 6px 20px rgba(0, 230, 118, 0.55);
+}
+.btn-game-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Sidebar stats grid (used across all games) ── */
+.game-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: auto;      /* push to bottom of flex sidebar */
+}
+
+.game-stat-item {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.game-stat-item .stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #4a5a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.game-stat-item .stat-value {
+  font-size: 15px;
+  font-weight: 800;
+  color: white;
+}
+.game-stat-item .stat-value.green  { color: var(--color-win); }
+.game-stat-item .stat-value.red    { color: var(--color-lose); }
+.game-stat-item .stat-value.gold   { color: var(--color-gold); }
+
+/* ── Paytable used in Slots sidebar ── */
+.paytable {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.paytable-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.2);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 13px;
+}
+.paytable-symbols { font-size: 16px; letter-spacing: 2px; }
+.paytable-payout  { font-weight: 700; color: var(--color-gold); }
+
+/* ── flex-center helper ── */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

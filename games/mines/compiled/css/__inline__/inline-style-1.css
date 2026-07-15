@@ -1,0 +1,516 @@
+.ogmbeaomtixfffub {
+  --nv-color-background: oklch(from #1a1f40 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground: oklch(from #e3edf9 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary: oklch(from #7D52F4 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground: oklch(from white l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary: oklch(from #282e54 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground: oklch(from #e3edf9 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-counter: oklch(from #3656ff l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-counter-foreground: oklch(from white l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-shadow: oklch(from black l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-ring: oklch(from #3656ff l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-stripes: oklch(from #05d3dd l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-25: oklch(from #1a1f40 l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-50: oklch(from #1a1f40 l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-100: oklch(from #1a1f40 l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-200: oklch(from #1a1f40 l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-300: oklch(from #1a1f40 l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-400: oklch(from #1a1f40 l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-500: oklch(from #1a1f40 l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-600: oklch(from #1a1f40 l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-700: oklch(from #1a1f40 l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-800: oklch(from #1a1f40 l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-background-alpha-900: oklch(from #1a1f40 l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-25: oklch(from #e3edf9 l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-50: oklch(from #e3edf9 l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-100: oklch(from #e3edf9 l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-200: oklch(from #e3edf9 l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-300: oklch(from #e3edf9 l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-400: oklch(from #e3edf9 l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-500: oklch(from #e3edf9 l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-600: oklch(from #e3edf9 l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-700: oklch(from #e3edf9 l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-800: oklch(from #e3edf9 l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-foreground-alpha-900: oklch(from #e3edf9 l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-25: oklch(from #7D52F4 min(1, calc(l + 0.475 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-50: oklch(from #7D52F4 min(1, calc(l + 0.45 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-100: oklch(from #7D52F4 min(1, calc(l + 0.4 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-200: oklch(from #7D52F4 min(1, calc(l + 0.3 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-300: oklch(from #7D52F4 min(1, calc(l + 0.2 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-400: oklch(from #7D52F4 min(1, calc(l + 0.1 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-500: oklch(from #7D52F4 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-600: oklch(from #7D52F4 max(0, calc(l * (1 + -0.1))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-700: oklch(from #7D52F4 max(0, calc(l * (1 + -0.2))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-800: oklch(from #7D52F4 max(0, calc(l * (1 + -0.3))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-900: oklch(from #7D52F4 max(0, calc(l * (1 + -0.4))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-25: oklch(from #7D52F4 l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-50: oklch(from #7D52F4 l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-100: oklch(from #7D52F4 l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-200: oklch(from #7D52F4 l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-300: oklch(from #7D52F4 l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-400: oklch(from #7D52F4 l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-500: oklch(from #7D52F4 l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-600: oklch(from #7D52F4 l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-700: oklch(from #7D52F4 l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-800: oklch(from #7D52F4 l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-alpha-900: oklch(from #7D52F4 l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-25: oklch(from white l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-50: oklch(from white l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-100: oklch(from white l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-200: oklch(from white l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-300: oklch(from white l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-400: oklch(from white l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-500: oklch(from white l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-600: oklch(from white l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-700: oklch(from white l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-800: oklch(from white l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-primary-foreground-alpha-900: oklch(from white l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-25: oklch(from #282e54 min(1, calc(l + 0.475 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-50: oklch(from #282e54 min(1, calc(l + 0.45 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-100: oklch(from #282e54 min(1, calc(l + 0.4 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-200: oklch(from #282e54 min(1, calc(l + 0.3 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-300: oklch(from #282e54 min(1, calc(l + 0.2 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-400: oklch(from #282e54 min(1, calc(l + 0.1 * (1 - l))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-500: oklch(from #282e54 l c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-600: oklch(from #282e54 max(0, calc(l * (1 + -0.1))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-700: oklch(from #282e54 max(0, calc(l * (1 + -0.2))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-800: oklch(from #282e54 max(0, calc(l * (1 + -0.3))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-900: oklch(from #282e54 max(0, calc(l * (1 + -0.4))) c h);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-25: oklch(from #282e54 l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-50: oklch(from #282e54 l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-100: oklch(from #282e54 l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-200: oklch(from #282e54 l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-300: oklch(from #282e54 l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-400: oklch(from #282e54 l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-500: oklch(from #282e54 l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-600: oklch(from #282e54 l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-700: oklch(from #282e54 l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-800: oklch(from #282e54 l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-alpha-900: oklch(from #282e54 l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-25: oklch(from #e3edf9 l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-50: oklch(from #e3edf9 l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-100: oklch(from #e3edf9 l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-200: oklch(from #e3edf9 l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-300: oklch(from #e3edf9 l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-400: oklch(from #e3edf9 l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-500: oklch(from #e3edf9 l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-600: oklch(from #e3edf9 l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-700: oklch(from #e3edf9 l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-800: oklch(from #e3edf9 l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-secondary-foreground-alpha-900: oklch(from #e3edf9 l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-25: oklch(from white l c h / 0.025);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-50: oklch(from white l c h / 0.05);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-100: oklch(from white l c h / 0.1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-200: oklch(from white l c h / 0.2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-300: oklch(from white l c h / 0.3);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-400: oklch(from white l c h / 0.4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-500: oklch(from white l c h / 0.5);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-600: oklch(from white l c h / 0.6);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-700: oklch(from white l c h / 0.7);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-800: oklch(from white l c h / 0.8);
+
+}
+.ogmbeaomtixfffub {
+  --nv-color-neutral-alpha-900: oklch(from white l c h / 0.9);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-xs: calc(1rem * 0.65625);
+  --nv-line-height-xs: calc(1rem * 0.65625 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-sm: calc(1rem * 0.765625);
+  --nv-line-height-sm: calc(1rem * 0.765625 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-base: calc(1rem * 0.875);
+  --nv-line-height-base: calc(1rem * 0.875 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-lg: calc(1rem * 0.984375);
+  --nv-line-height-lg: calc(1rem * 0.984375 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-xl: calc(1rem * 1.09375);
+  --nv-line-height-xl: calc(1rem * 1.09375 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-2xl: calc(1rem * 1.3125);
+  --nv-line-height-2xl: calc(1rem * 1.3125 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-3xl: calc(1rem * 1.640625);
+  --nv-line-height-3xl: calc(1rem * 1.640625 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-font-size-4xl: calc(1rem * 1.96875);
+  --nv-line-height-4xl: calc(1rem * 1.96875 * 1.33);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-none: 0px;
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-xs: calc(0.375rem * 0.333);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-sm: calc(0.375rem * 0.667);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-md: calc(0.375rem * 1);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-lg: calc(0.375rem * 1.333);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-xl: calc(0.375rem * 2);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-2xl: calc(0.375rem * 2.667);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-3xl: calc(0.375rem * 4);
+
+}
+.ogmbeaomtixfffub {
+  --nv-radius-full: 9999px;
+
+}

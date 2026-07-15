@@ -1,0 +1,793 @@
+/* ═══ Deposit Modal ═══ */
+.deposit-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deposit-modal {
+  background: linear-gradient(145deg, #141828, #1a1f38);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  width: 480px;
+  max-width: 92vw;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.65);
+}
+
+.dm-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #5a6a9a;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  transition: all 0.2s;
+}
+.dm-close:hover { color: white; background: rgba(255,255,255,0.06); }
+
+.dm-body {
+  padding: 36px 32px 32px;
+}
+
+.dm-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #5a6a9a;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  margin-bottom: 16px;
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+.dm-back:hover { color: white; }
+
+.dm-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.dm-subtitle {
+  color: #6b7db0;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* ─── Method Select Grid ─── */
+.dm-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.dm-method-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 28px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dm-method-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.dmc-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.dmc-label {
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.dmc-desc {
+  color: #5a6a9a;
+  font-size: 11px;
+  text-align: center;
+}
+
+/* ─── Chain List ─── */
+.dm-chain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dm-chain-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.dm-chain-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.chain-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.chain-icon-lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.chain-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.chain-name {
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.chain-symbol {
+  color: #5a6a9a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chain-price {
+  color: #00e676;
+  font-size: 13px;
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+.chain-arrow {
+  color: #3a4a7a;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* ─── Chain Header ─── */
+.dm-chain-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.dm-chain-header .dm-title { margin-bottom: 4px; }
+
+.dm-rate-text {
+  color: #6b7db0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dm-success-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 230, 118, 0.15);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  color: #00e676;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* ─── QR Code ─── */
+.dm-qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.dm-qr-border {
+  background: white;
+  padding: 14px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+/* ─── Address Box ─── */
+.dm-addr-group {
+  margin-bottom: 20px;
+}
+
+.dm-addr-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a6a9a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.dm-addr-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px 14px;
+}
+
+.dm-addr-text {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: white;
+  word-break: break-all;
+  flex: 1;
+  line-height: 1.5;
+}
+
+.dm-copy-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.dm-copy-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* ─── Info Box ─── */
+.dm-info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(59, 130, 246, 0.06);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: #8b9cc7;
+  line-height: 1.5;
+}
+.dm-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.dm-info-sub {
+  font-size: 12px;
+  color: #6b7db0;
+}
+.dm-info-box strong { color: #3b82f6; }
+.dm-info-icon { color: #3b82f6; flex-shrink: 0; margin-top: 1px; }
+
+/* ─── Loading ─── */
+.dm-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 40px 0;
+  color: #6b7db0;
+  font-size: 14px;
+}
+
+.dm-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: dm-spin 0.8s linear infinite;
+}
+
+@keyframes dm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── Coming Soon ─── */
+.dm-coming-soon {
+  text-align: center;
+  padding: 32px 0;
+  color: #3a4a7a;
+}
+.dm-coming-soon h3 {
+  color: #6b7db0;
+  margin: 16px 0 8px;
+  font-size: 18px;
+}
+.dm-coming-soon p {
+  color: #4a5a8a;
+  font-size: 14px;
+  max-width: 280px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+/* ═══ Wallet Modal — extra styles ═══ */
+
+/* ── Main tabs (Deposit / Withdraw) ── */
+.dm-main-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 0 24px;
+  margin-top: 8px;
+}
+.dm-main-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #4a6080;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-bottom: -1px;
+}
+.dm-main-tab:hover { color: #8ab0cc; }
+.dm-main-tab.active {
+  color: #fff;
+  border-bottom-color: #3b82f6;
+}
+
+/* ── Withdraw mode select ── */
+.dm-wd-mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 4px;
+}
+.dm-wd-mode-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 24px 14px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.22s;
+}
+.dm-wd-mode-card:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+.dm-wd-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Form fields ── */
+.dm-field {
+  margin-bottom: 16px;
+}
+.dm-field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a6080;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  margin-bottom: 8px;
+}
+.dm-text-input {
+  width: 100%;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid #1e2d45;
+  border-radius: 10px;
+  color: #fff;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.18s;
+  box-sizing: border-box;
+}
+.dm-text-input:focus { border-color: #3b82f6; }
+.dm-text-input::placeholder { color: #2d4560; }
+.dm-input-row {
+  display: flex;
+  align-items: center;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid #1e2d45;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.18s;
+}
+.dm-input-row:focus-within { border-color: #3b82f6; }
+.dm-input-prefix {
+  padding: 0 12px;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.dm-input-inner {
+  flex: 1;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 12px 8px !important;
+  background: transparent !important;
+}
+.dm-max-btn {
+  background: #1e3a5a;
+  border: none;
+  color: #60a5fa;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0 14px;
+  height: 100%;
+  min-height: 44px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.dm-max-btn:hover { background: #264a72; }
+
+/* Chain pills */
+.dm-chain-pills {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dm-chain-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(0,0,0,0.25);
+  border: 1.5px solid #1e2d45;
+  border-radius: 20px;
+  color: #4a6080;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.dm-chain-pill:hover { background: rgba(255,255,255,0.05); color: #8ab0cc; }
+.dm-chain-pill.active { font-weight: 800; }
+
+/* ── Fee breakdown box ── */
+.dm-fee-box {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid #1a2840;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dm-fee-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #4a6080;
+  font-weight: 600;
+}
+.dm-fee-row.fee-line {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 8px;
+}
+.dm-fee-row.total-line {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ── Withdraw button ── */
+.dm-btn-withdraw {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.35);
+  font-family: inherit;
+}
+.dm-btn-withdraw:hover:not(:disabled) {
+  background: linear-gradient(135deg, #818cf8, #6366f1);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.5);
+}
+.dm-btn-withdraw:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+/* ── Default withdraw summary ── */
+.dm-default-summary {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid #1a2840;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.dds-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #4a6080;
+  font-weight: 600;
+}
+.dds-addr {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #7090b0;
+}
+.dds-total {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 9px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ── Default withdraw button ── */
+.dm-btn-default-wd {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  background: #16a34a;
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s;
+  box-shadow: 0 4px 14px rgba(22,163,74,0.35);
+}
+.dm-btn-default-wd:hover:not(:disabled) {
+  background: #22c55e;
+  box-shadow: 0 6px 20px rgba(34,197,94,0.5);
+}
+.dm-btn-default-wd.confirm {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  animation: wd-confirm-pulse 0.9s ease-in-out infinite;
+}
+.dm-btn-default-wd:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+@keyframes wd-confirm-pulse {
+  0%,100% { box-shadow: 0 4px 14px rgba(34,197,94,0.35); }
+  50%      { box-shadow: 0 6px 28px rgba(34,197,94,0.6); }
+}
+
+/* ── Send animation ── */
+.dm-default-btn-area {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+}
+.dm-default-btn-area > * { width: 100%; }
+
+.dm-sending-anim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0;
+  width: 100%;
+}
+.dm-send-track {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(74,222,128,0.15);
+  border-radius: 2px;
+  overflow: visible;
+}
+.dm-send-dot {
+  position: absolute;
+  left: 0; top: 50%;
+  width: 10px; height: 10px;
+  background: #4ade80;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 12px rgba(74,222,128,0.8);
+}
+.dm-send-icon {
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+}
+.dm-sending-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4ade80;
+}
+.dm-spin-icon {
+  animation: dm-spin 0.7s linear infinite;
+}
+@keyframes dm-spin { to { transform: rotate(360deg); } }
+
+/* ── Done card ── */
+.dm-done-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0 4px;
+  text-align: center;
+  width: 100%;
+}
+.dm-done-check { margin-bottom: 4px; }
+.dm-done-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: #fff;
+}
+.dm-done-amount {
+  font-size: 26px;
+  font-weight: 900;
+  color: #4ade80;
+  text-shadow: 0 0 20px rgba(74,222,128,0.5);
+}
+.dm-done-sub {
+  font-size: 12px;
+  color: #4a6080;
+  font-family: 'Courier New', monospace;
+}
+
+/* ── Promo Code Section ── */
+.dm-promo-section {
+  margin-top: 24px;
+  background: rgba(251,191,36,0.04);
+  border: 1px solid rgba(251,191,36,0.12);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.dm-promo-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fbbf24;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 12px;
+}
+.dm-promo-row {
+  display: flex;
+  gap: 8px;
+}
+.dm-promo-input {
+  flex: 1;
+  padding: 10px 14px !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.dm-promo-btn {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.dm-promo-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+}
+.dm-promo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.dm-promo-msg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.dm-promo-msg.success {
+  background: rgba(74,222,128,0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,0.2);
+}
+.dm-promo-msg.error {
+  background: rgba(248,113,113,0.1);
+  color: #f87171;
+  border: 1px solid rgba(248,113,113,0.2);
+}

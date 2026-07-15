@@ -1,0 +1,77 @@
+.sidebar-section-box {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 14px 8px;
+  margin-bottom: 12px;
+}
+
+.sidebar-section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.nav-item:hover {
+  color: white;
+}
+
+.nav-item.active {
+  color: var(--accent-purple);
+  font-weight: 600;
+}
+
+.nav-active-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--accent-purple-dim);
+  border-radius: 8px;
+  z-index: -1;
+  border-left: 3px solid var(--accent-purple);
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-icon {
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.nav-item:hover .nav-icon {
+  opacity: 1;
+}
+
+.text-yellow-400 {
+  color: #facc15;
+}

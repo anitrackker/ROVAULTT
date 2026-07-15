@@ -1,0 +1,228 @@
+.crash-viewport {
+  height: 100%;
+}
+
+.viewport-top-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.history-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.history-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.history-badge.instant {
+  color: var(--color-lose);
+}
+.history-badge.low {
+  color: #a0a0a0;
+}
+.history-badge.high {
+  color: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green-dim);
+}
+
+.viewport-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.vp-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.vp-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.vp-badge-btn {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #a0a0a0;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.vp-badge-btn:hover {
+  color: white;
+}
+
+/* Multiplier styling */
+.multiplier-container {
+  text-align: center;
+  z-index: 5;
+}
+
+.multiplier-val {
+  font-size: 80px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: white;
+  line-height: 1;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.multiplier-val.crashed-color {
+  color: var(--color-lose);
+  text-shadow: 0 0 20px rgba(255, 61, 0, 0.4);
+}
+
+.multiplier-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5d6b8b;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* Players Bet List styling */
+.players-list-panel {
+  background: #151b2e;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.players-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: #5d6b8b;
+}
+
+.players-rows {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.player-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+  font-size: 13px;
+}
+
+.player-row.my-row {
+  background: rgba(0, 230, 118, 0.05);
+}
+
+.player-row.cashed {
+  background: rgba(0, 230, 118, 0.02);
+}
+
+.player-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.row-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.player-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.payout-mult {
+  color: var(--color-win);
+  font-weight: 700;
+}
+
+.payout-val {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.payout-val.win {
+  color: var(--color-win);
+}
+
+.active-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+}
+
+/* Rocket Animation Elements */
+.rocket-wrapper {
+  z-index: 4;
+}
+
+.rocket-sprite {
+  font-size: 40px;
+  transform: rotate(45deg);
+}
+
+.rocket-flame {
+  position: absolute;
+  left: -20px;
+  bottom: -10px;
+  width: 25px;
+  height: 15px;
+  background: linear-gradient(to left, orange, red);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: flicker 0.15s infinite alternate;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Bottom Axis */
+.bottom-axis {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  color: #5d6b8b;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 5;
+}

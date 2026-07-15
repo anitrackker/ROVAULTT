@@ -1,0 +1,232 @@
+/* Dashboard CSS */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+/* HERO BANNER */
+.hero-banner {
+  position: relative;
+  background: linear-gradient(135deg, #181818 0%, #0f0f0f 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+.hero-text p {
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btn-lg {
+  padding: 14px 32px;
+  font-size: 16px;
+}
+
+.hero-visual {
+  position: relative;
+  z-index: 1;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-3d-element {
+  font-size: 100px;
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+  z-index: 2;
+}
+
+.hero-glow-orb {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: var(--accent-purple);
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: 1;
+}
+
+/* GAMES GRID */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.view-all {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.view-all:hover {
+  color: white;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.game-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.gc-icon-wrapper {
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.gc-title {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #fff;
+  z-index: 2;
+}
+
+.gc-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  line-height: 1.5;
+  z-index: 2;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.gc-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-purple-dim) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.game-card:hover .gc-glow {
+  opacity: 1;
+}
+
+.game-card:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-purple-dim);
+}
+
+/* LIVE TICKER */
+.live-ticker-wrapper {
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 0;
+  margin-bottom: 40px;
+  display: flex;
+  white-space: nowrap;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.live-ticker-track {
+  display: flex;
+  animation: slide-ticker 30s linear infinite;
+}
+
+.live-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 30px;
+  font-size: 14px;
+  color: var(--text-muted);
+  border-right: 1px solid var(--border-color);
+}
+
+.ticker-user {
+  font-weight: 700;
+  color: #fff;
+}
+
+.ticker-amount {
+  font-weight: 800;
+  color: #facc15;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ticker-game {
+  color: var(--accent-purple);
+  font-weight: 600;
+}
+
+@keyframes slide-ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.33%);
+  }
+}

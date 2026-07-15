@@ -1,0 +1,427 @@
+/* ═══════════════════════════════════════
+   RoVault Premium Blackjack Styling
+   ═══════════════════════════════════════ */
+
+.bj-viewport {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #1b224c 0%, #0d1024 100%) !important;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bj-game-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #8b9cc7;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Casino Felt Table ─── */
+.bj-table-felt {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  padding: 40px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.table-felt-lanes {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+.lane-arc {
+  border: 2px solid #566eff;
+  border-radius: 50% / 0 0 100% 100%;
+  width: 100%;
+  height: 80px;
+  border-top: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #566eff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.lane-arc-small {
+  border: 1.5px dashed #566eff;
+  border-radius: 50% / 0 0 100% 100%;
+  width: 70%;
+  height: 50px;
+  border-top: none;
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 6px;
+  font-weight: 600;
+  font-size: 10px;
+  color: #566eff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* ─── Card Shoe ─── */
+.bj-card-shoe {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  width: 72px;
+  height: 92px;
+  background: linear-gradient(135deg, #242b5c 0%, #151938 100%);
+  border: 2px solid #3b437e;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transform: rotate(-15deg);
+  z-index: 10;
+}
+
+.shoe-deck-glow {
+  position: absolute;
+  inset: -2px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, transparent 100%);
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+.shoe-cards {
+  position: relative;
+  width: 50px;
+  height: 60px;
+  background: #0f1228;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.card-back-patternSmall {
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(45deg, #323e85 25%, transparent 25%),
+              linear-gradient(-45deg, #323e85 25%, transparent 25%),
+              linear-gradient(45deg, transparent 75%, #323e85 75%),
+              linear-gradient(-45deg, transparent 75%, #323e85 75%);
+  background-size: 8px 8px;
+  background-color: #171d42;
+  border-radius: 2px;
+}
+
+.shoe-label {
+  font-size: 8px;
+  font-weight: 700;
+  color: #5d6b8b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Hands Layout ─── */
+.bj-hands-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+.bj-hand-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hand-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.hand-owner {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b7db0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bj-score-badge {
+  background: #252d5f;
+  border: 1px solid #3d4a8f;
+  color: #e1e7ff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* ─── Cards Row ─── */
+.bj-cards-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  min-height: 124px;
+  width: 100%;
+}
+
+.card-3d-wrapper {
+  perspective: 1000px;
+  width: 82px;
+  height: 120px;
+}
+
+/* Card 3D Flip Mechanics */
+.bj-card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bj-card.hidden {
+  transform: rotateY(180deg);
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+.card-front {
+  background: #ffffff;
+  color: #000000;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-back {
+  background: #171c3e;
+  border: 2px solid #28306a;
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+
+.card-back-design {
+  border: 1px dashed rgba(255, 215, 0, 0.3);
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.card-back-design span {
+  font-size: 8px;
+  font-weight: 700;
+  color: gold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vault-gold-icon {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.card-val {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.card-val.top-left {
+  align-self: flex-start;
+}
+
+.card-val.bottom-right {
+  align-self: flex-end;
+  transform: rotate(180deg);
+}
+
+.card-suit.center {
+  font-size: 32px;
+  align-self: center;
+  line-height: 1;
+}
+
+/* Colors */
+.red {
+  color: #ff4757;
+}
+
+.black {
+  color: #2f3542;
+}
+
+/* ─── Outcome Banner ─── */
+.bj-outcome-banner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  min-width: 240px;
+}
+
+.bj-outcome-banner.blackjack,
+.bj-outcome-banner.win,
+.bj-outcome-banner.dealerBust {
+  background: rgba(0, 230, 118, 0.15);
+  border: 2px solid rgba(0, 230, 118, 0.4);
+  color: #00e676;
+  text-shadow: 0 0 12px rgba(0, 230, 118, 0.6);
+}
+
+.bj-outcome-banner.lose,
+.bj-outcome-banner.bust {
+  background: rgba(255, 71, 87, 0.15);
+  border: 2px solid rgba(255, 71, 87, 0.4);
+  color: #ff4757;
+  text-shadow: 0 0 12px rgba(255, 71, 87, 0.6);
+}
+
+.bj-outcome-banner.push {
+  background: rgba(255, 165, 0, 0.15);
+  border: 2px solid rgba(255, 165, 0, 0.4);
+  color: #ffa500;
+  text-shadow: 0 0 12px rgba(255, 165, 0, 0.6);
+}
+
+/* ─── Actions Layout ─── */
+.bj-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.bj-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.bj-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.bj-btn.hit {
+  background: #3b82f6;
+}
+
+.bj-btn.hit:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.bj-btn.stand {
+  background: #ef4444;
+}
+
+.bj-btn.stand:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.bj-btn.double {
+  background: #eab308;
+}
+
+.bj-btn.double:hover:not(:disabled) {
+  background: #ca8a04;
+}
+
+/* Autobet Controls */
+.bj-control-input {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.bj-control-input:focus {
+  border-color: #3b82f6 !important;
+  outline: none;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-danger {
+  background: #ef4444 !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-danger:hover {
+  background: #dc2626 !important;
+}

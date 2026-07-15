@@ -1,0 +1,212 @@
+/* ── Provably Fair Modal ── */
+
+.pf-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.pf-modal {
+  background: linear-gradient(145deg, #1a1f35, #141829);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(168, 85, 247, 0.06);
+}
+
+.pf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pf-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pf-title-row h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.pf-shield-icon {
+  color: #a855f7;
+  filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.4));
+}
+
+.pf-close-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #8b9cc7;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pf-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.pf-description {
+  color: #8b9cc7;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 8px 0 22px;
+}
+
+.pf-field {
+  margin-bottom: 16px;
+}
+
+.pf-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b9cc7;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pf-input-row {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.pf-input-row:focus-within {
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.pf-input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  color: #5d6b8b;
+  flex-shrink: 0;
+}
+
+.pf-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  padding: 12px 0;
+  min-width: 0;
+}
+
+.pf-input.disabled {
+  color: #8b9cc7;
+  cursor: not-allowed;
+}
+
+.pf-input::placeholder {
+  color: #3d4b6b;
+}
+
+.pf-copy-btn {
+  background: transparent;
+  border: none;
+  color: #5d6b8b;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pf-copy-btn:hover {
+  color: #a855f7;
+  background: rgba(168, 85, 247, 0.08);
+}
+
+.pf-save-btn {
+  width: 100%;
+  padding: 13px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: white;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.25);
+}
+
+.pf-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(168, 85, 247, 0.35);
+}
+
+.pf-save-btn:active {
+  transform: translateY(0);
+}
+
+.pf-save-btn.saved {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);
+}
+
+/* ── Sidebar Provably Fair Button ── */
+
+.sidebar-pf-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  background: rgba(168, 85, 247, 0.06);
+  color: #c4b5fd;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.sidebar-pf-btn:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #e9d5ff;
+  transform: translateY(-1px);
+}
+
+.sidebar-pf-btn .pf-btn-icon {
+  color: #a855f7;
+  filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.3));
+}

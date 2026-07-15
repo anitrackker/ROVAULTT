@@ -1,0 +1,137 @@
+.cookie-banner-wrapper {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  width: calc(100% - 48px);
+}
+
+.cookie-banner-content {
+  background: linear-gradient(145deg, rgba(26, 31, 53, 0.95), rgba(20, 24, 41, 0.98));
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 40px rgba(168, 85, 247, 0.1);
+  max-width: 900px;
+  pointer-events: auto;
+}
+
+.cookie-banner-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(168, 85, 247, 0.1);
+  border-radius: 12px;
+  min-width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+.cookie-banner-text {
+  flex: 1;
+}
+
+.cookie-banner-text h3 {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  color: white;
+  font-weight: 700;
+}
+
+.cookie-banner-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #8b9cc7;
+  line-height: 1.5;
+}
+
+.cookie-banner-text a {
+  color: #a855f7;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.cookie-banner-text a:hover {
+  text-decoration: underline;
+}
+
+.cookie-banner-text strong {
+  color: #fbbf24;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  border: none;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+  white-space: nowrap;
+}
+
+.cookie-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+}
+
+.cookie-btn:active {
+  transform: translateY(0);
+}
+
+.cookie-btn-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #8b9cc7;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cookie-btn-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .cookie-banner-content {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px;
+  }
+  
+  .cookie-banner-actions {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .cookie-btn-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+}

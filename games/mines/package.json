@@ -1,0 +1,17 @@
+{
+  "name": "reconstructed-bloxflip-com",
+  "version": "1.0.0",
+  "description": "Reconstructed source from bloxflip.com",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "serve-static": "npx serve static-html -p 3000"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
