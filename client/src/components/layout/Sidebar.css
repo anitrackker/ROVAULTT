@@ -6,6 +6,16 @@
   margin-bottom: 12px;
 }
 
+.sidebar-section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
 .sidebar-nav {
   display: flex;
   flex-direction: column;
@@ -31,7 +41,7 @@
 }
 
 .nav-item.active {
-  color: var(--accent-green);
+  color: var(--accent-purple);
   font-weight: 600;
 }
 
@@ -41,10 +51,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--accent-green-dim);
+  background-color: var(--accent-purple-dim);
   border-radius: 8px;
   z-index: -1;
-  border-left: 3px solid var(--accent-green);
+  border-left: 3px solid var(--accent-purple);
 }
 
 .nav-content {

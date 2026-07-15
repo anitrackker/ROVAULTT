@@ -153,8 +153,8 @@
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .login-input-wrap input:focus {
-  border-color: var(--accent-green);
-  box-shadow: 0 0 0 3px var(--accent-green-dim);
+  border-color: var(--accent-purple);
+  box-shadow: 0 0 0 3px var(--accent-purple-dim);
 }
 .login-input-wrap input::placeholder {
   color: #555;
@@ -189,17 +189,20 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-green), #00c853);
-  color: #000;
+  background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+  color: #fff;
   padding: 8px 18px;
   font-weight: 700;
   border-radius: 10px;
 }
 .btn-primary:hover {
-  box-shadow: 0 4px 16px var(--accent-green-glow);
+  box-shadow: 0 4px 16px var(--accent-purple-glow);
 }
 
 .btn-sm {
   padding: 6px 12px;
   font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
