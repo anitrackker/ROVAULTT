@@ -103,47 +103,95 @@ export const Crash = () => {
       const prevRx = paddingX + (prev.x * scaleX);
       const prevRy = ch - paddingY - (prev.y * scaleY);
       const dx = rx - prevRx;
-      const dy = prevRy - ry; // flipped Y
+      const dy = prevRy - ry; // flipped Y (so moving up means positive dy)
       angle = Math.atan2(dy, dx) * (180 / Math.PI);
     }
 
-    const clampedAngle = Math.max(0, Math.min(45, angle)); // Nose always points in direction of travel
+    const clampedAngle = Math.max(0, Math.min(80, angle)); // Nose always points in direction of travel (max 80deg up)
 
     // Particle Exhaust System
     if (!isCrashed && elapsed > 100) {
-      // Add 2-3 particles per frame based on speed
-      const speed = mult > 10 ? 3 : mult > 5 ? 2 : 1;
-      for (let i = 0; i < speed; i++) {
+      const rad = clampedAngle * Math.PI / 180;
+      // Exhaust is exactly 50px behind the center of the rotated rocket
+      const exhaustX = rx - Math.cos(rad) * 45;
+      const exhaustY = ry + Math.sin(rad) * 45; // Canvas Y is inverted
+
+      const speedMult = mult > 5 ? (mult > 10 ? 3 : 2) : 1;
+      
+      // FIRE PARTICLES
+      for (let i = 0; i < 5 * speedMult; i++) {
+        const spread = (Math.random() - 0.5) * 12; // Spread perpendicular to thruster
         particlesRef.current.push({
-          x: rx - Math.cos(clampedAngle * Math.PI / 180) * 20, // Emit from back of rocket
-          y: ry + Math.sin(clampedAngle * Math.PI / 180) * 20,
-          vx: (Math.random() - 0.5) * 2 - (Math.cos(clampedAngle * Math.PI / 180) * 2), // Fire backwards
-          vy: (Math.random() - 0.5) * 2 + (Math.sin(clampedAngle * Math.PI / 180) * 2),
+          type: 'fire',
+          x: exhaustX + Math.sin(rad) * spread,
+          y: exhaustY + Math.cos(rad) * spread,
+          vx: -Math.cos(rad) * (Math.random() * 6 + 3) + (Math.random() - 0.5) * 2,
+          vy: Math.sin(rad) * (Math.random() * 6 + 3) + (Math.random() - 0.5) * 2,
           life: 1.0,
-          size: Math.random() * 8 + 4
+          decay: Math.random() * 0.04 + 0.02,
+          size: Math.random() * 12 + 8
         });
+      }
+
+      // SMOKE PARTICLES
+      if (Math.random() < 0.6) {
+        for (let i = 0; i < 2; i++) {
+          const spread = (Math.random() - 0.5) * 20;
+          particlesRef.current.push({
+            type: 'smoke',
+            x: exhaustX + Math.sin(rad) * spread,
+            y: exhaustY + Math.cos(rad) * spread,
+            vx: -Math.cos(rad) * (Math.random() * 3 + 1) + (Math.random() - 0.5),
+            vy: Math.sin(rad) * (Math.random() * 3 + 1) + (Math.random() - 0.5),
+            life: 1.0,
+            decay: Math.random() * 0.015 + 0.01,
+            size: Math.random() * 25 + 15
+          });
+        }
       }
     }
 
     // Draw Particles
+    // Use composite operation for glowing fire
+    ctx.globalCompositeOperation = 'lighter';
     for (let i = particlesRef.current.length - 1; i >= 0; i--) {
       const p = particlesRef.current[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.life -= 0.03;
-      
-      if (p.life <= 0) {
-        particlesRef.current.splice(i, 1);
-      } else {
-        // Color gradient: White -> Yellow -> Orange -> Dark Orange based on life
-        let color = `rgba(255, 255, 255, ${p.life})`;
-        if (p.life < 0.8) color = `rgba(250, 204, 21, ${p.life})`;
-        if (p.life < 0.5) color = `rgba(239, 68, 68, ${p.life})`;
-
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-        ctx.fill();
+      if (p.type === 'fire') {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          particlesRef.current.splice(i, 1);
+        } else {
+          let r = 255, g = 255, b = 255;
+          if (p.life < 0.8) { g = 220; b = 50; } // Yellow
+          if (p.life < 0.5) { g = 120; b = 0; }  // Orange
+          if (p.life < 0.3) { r = 255; g = 50; b = 0; } // Red
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.life})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    
+    // Switch back to normal for smoke
+    ctx.globalCompositeOperation = 'source-over';
+    for (let i = particlesRef.current.length - 1; i >= 0; i--) {
+      const p = particlesRef.current[i];
+      if (p.type === 'smoke') {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        p.size += 0.4; // Smoke expands
+        if (p.life <= 0) {
+          particlesRef.current.splice(i, 1);
+        } else {
+          ctx.fillStyle = `rgba(150, 150, 150, ${p.life * 0.2})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
     }
 
@@ -153,12 +201,22 @@ export const Crash = () => {
         rocketRef.current.style.display = 'none'; // Hide rocket on crash
       } else {
         rocketRef.current.style.display = 'block';
+        
+        // High-speed jitter
+        let jitterX = 0;
+        let jitterY = 0;
+        if (mult > 3) {
+          const intensity = Math.min(5, (mult - 3) * 0.5);
+          jitterX = (Math.random() - 0.5) * intensity;
+          jitterY = (Math.random() - 0.5) * intensity;
+        }
+
         // -50% -50% to center it on the coordinates
-        rocketRef.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) rotate(${-clampedAngle}deg)`;
+        rocketRef.current.style.transform = `translate3d(${rx + jitterX}px, ${ry + jitterY}px, 0) translate(-50%, -50%) rotate(${-clampedAngle}deg)`;
         
         // Add dynamic glow to the rocket wrapper
-        const glowColor = mult >= 10 ? 'rgba(239, 68, 68, 0.6)' : mult >= 5 ? 'rgba(250, 204, 21, 0.6)' : 'rgba(0, 230, 118, 0.4)';
-        rocketRef.current.style.filter = `drop-shadow(0 0 ${10 + (mult * 2)}px ${glowColor})`;
+        const glowColor = mult >= 10 ? 'rgba(255, 50, 0, 0.8)' : mult >= 5 ? 'rgba(250, 204, 21, 0.7)' : 'rgba(0, 230, 118, 0.5)';
+        rocketRef.current.style.filter = `drop-shadow(0 0 ${15 + (mult * 2)}px ${glowColor})`;
       }
     }
 
@@ -460,7 +518,7 @@ export const Crash = () => {
             <img 
                src="/rocket.png" 
                alt="Rocket" 
-               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+               style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'rotate(45deg)' }}
                onError={(e) => {
                  // Fallback if image not uploaded yet
                  e.target.style.display = 'none';
