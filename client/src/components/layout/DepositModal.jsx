@@ -14,6 +14,81 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
   ? 'http://localhost:3000/api'
   : 'https://rovault.onrender.com/api';
 
+const RealisticWithdrawAnimation = ({ netCrypto, symbol, address }) => {
+  const [step, setStep] = useState(0);
+  const [txHash, setTxHash] = useState('');
+
+  useEffect(() => {
+    const chars = '0123456789abcdef';
+    let hash = '0x';
+    for (let i = 0; i < 40; i++) hash += chars[Math.floor(Math.random() * 16)];
+
+    const t1 = setTimeout(() => setStep(1), 1000);
+    const t2 = setTimeout(() => {
+      setTxHash(hash);
+      setStep(2);
+    }, 2200);
+    const t3 = setTimeout(() => setStep(3), 3400);
+    const t4 = setTimeout(() => setStep(4), 4800);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+  }, []);
+
+  const steps = [
+    { label: 'Initiating Transfer...', active: step === 0 },
+    { label: 'Building Transaction...', active: step === 1 },
+    { label: 'Signing Transaction...', active: step === 2 },
+    { label: 'Broadcasting to Network...', active: step === 3 },
+    { label: 'Awaiting Confirmations...', active: step === 4 }
+  ];
+
+  return (
+    <motion.div 
+      className="dm-realistic-sending"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+    >
+      <div className="dm-rs-header">
+        <div className="dm-rs-pulse-ring">
+          <div className="dm-rs-pulse-circle"></div>
+          <Send size={24} color="#60a5fa" />
+        </div>
+        <div className="dm-rs-title">Processing Withdrawal</div>
+        <div className="dm-rs-amount">{netCrypto} {symbol}</div>
+      </div>
+      
+      <div className="dm-rs-steps">
+        {steps.map((s, i) => (
+          <div key={i} className={`dm-rs-step ${step >= i ? 'active' : ''} ${step > i ? 'done' : ''}`}>
+            <div className="dm-rs-step-icon">
+              {step > i ? (
+                <CheckCircle2 size={16} color="#4ade80" />
+              ) : step === i ? (
+                <Loader2 size={16} className="dm-spin-icon" color="#60a5fa" />
+              ) : (
+                <div className="dm-step-wait" />
+              )}
+            </div>
+            <div className="dm-rs-step-label">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="dm-rs-footer">
+        <div className="dm-rs-detail">
+          <span>Destination</span>
+          <span className="dm-rs-mono">{address || '—'}</span>
+        </div>
+        <div className="dm-rs-detail">
+          <span>TxHash</span>
+          <span className="dm-rs-mono">{txHash ? `${txHash.slice(0, 10)}...${txHash.slice(-8)}` : 'Generating...'}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const CHAINS = [
   { id: 'btc', name: 'Bitcoin',   symbol: 'BTC', icon: '₿', color: '#F7931A', prefix: 'bitcoin',  network: 'Bitcoin Network',   fee: 0.00008 },
   { id: 'eth', name: 'Ethereum',  symbol: 'ETH', icon: 'Ξ', color: '#627EEA', prefix: 'ethereum', network: 'ERC-20',            fee: 0.002   },
@@ -570,7 +645,7 @@ const DefaultWithdraw = ({
           address: address ? `${address.slice(0,8)}…${address.slice(-6)}` : '—',
         });
         setDefState('done');
-      }, 2200);
+      }, 5200);
     }
   };
 
@@ -697,30 +772,11 @@ const DefaultWithdraw = ({
 
           {/* Sending animation */}
           {defState === 'sending' && (
-            <motion.div
-              key="sending"
-              className="dm-sending-anim"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            >
-              <div className="dm-send-track">
-                <motion.div
-                  className="dm-send-dot"
-                  animate={{ x: [0, 220, 220], opacity: [1, 1, 0] }}
-                  transition={{ duration: 2, ease: 'easeInOut' }}
-                />
-                <motion.div
-                  className="dm-send-icon"
-                  animate={{ x: [0, 200] }}
-                  transition={{ duration: 2, ease: 'easeInOut' }}
-                >
-                  <Send size={20} color="#4ade80" />
-                </motion.div>
-              </div>
-              <div className="dm-sending-label">
-                <Loader2 size={14} className="dm-spin-icon" />
-                Sending {netCrypto.toFixed(6)} {chainObj.symbol}…
-              </div>
-            </motion.div>
+            <RealisticWithdrawAnimation 
+              netCrypto={netCrypto.toFixed(6)} 
+              symbol={chainObj.symbol} 
+              address={address ? `${address.slice(0,10)}...${address.slice(-8)}` : '—'} 
+            />
           )}
 
           {/* Done */}
