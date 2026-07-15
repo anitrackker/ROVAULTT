@@ -29,8 +29,14 @@ export const Crash = () => {
   const isMyticketCashedRef = useRef(isMyticketCashed);
   const autoCashoutRef = useRef(autoCashout);
   const gameStateRef = useRef(gameState);
+  
+  // Animation Engine Refs
+  const canvasRef = useRef(null);
+  const rocketRef = useRef(null);
+  const pathRef = useRef([]);
+  const particlesRef = useRef([]);
 
-  // Keep refs in sync with state so the rAF loop always reads current values
+  // Keep refs in sync with state
   useEffect(() => { betRef.current = bet; }, [bet]);
   useEffect(() => { isMutedRef.current = isMuted; }, [isMuted]);
   useEffect(() => { isMyticketCashedRef.current = isMyticketCashed; }, [isMyticketCashed]);
@@ -44,7 +50,7 @@ export const Crash = () => {
 
   const cashOut = (mult) => {
     if (isMyticketCashedRef.current) return;
-    isMyticketCashedRef.current = true; // flip the ref immediately so the rAF loop won't double-trigger
+    isMyticketCashedRef.current = true;
     setIsMyticketCashed(true);
     const winAmt = betRef.current * mult;
     setMyWin(winAmt);
@@ -54,21 +60,144 @@ export const Crash = () => {
     confetti({ particleCount: 80, spread: 60 });
   };
 
+  const drawGraph = (elapsed, mult, isCrashed) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const cw = canvas.width;
+    const ch = canvas.height;
+
+    ctx.clearRect(0, 0, cw, ch);
+
+    // Coordinate Math
+    const x = elapsed * 0.05;
+    const y = (mult - 1) * 100;
+    
+    // Push to path if rising
+    if (!isCrashed) {
+      pathRef.current.push({ x, y });
+    }
+
+    // Dynamic Camera Panning (Keep rocket between 60%-80%)
+    const targetX = cw * 0.75;
+    const targetY = ch * 0.70;
+    
+    // Scale down if we exceed target bounds
+    const scaleX = Math.min(1, targetX / Math.max(1, x));
+    const scaleY = Math.min(1, targetY / Math.max(1, y));
+
+    const paddingX = 40;
+    const paddingY = 40;
+
+    // Draw the glowing curve
+    if (pathRef.current.length > 0) {
+      ctx.beginPath();
+      ctx.moveTo(paddingX, ch - paddingY);
+      for (const pt of pathRef.current) {
+        ctx.lineTo(paddingX + (pt.x * scaleX), ch - paddingY - (pt.y * scaleY));
+      }
+      ctx.strokeStyle = isCrashed ? '#ef4444' : '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = isCrashed ? '#ef4444' : (mult >= 10 ? '#ef4444' : mult >= 5 ? '#facc15' : '#00e676');
+      ctx.shadowBlur = 15;
+      ctx.stroke();
+      ctx.shadowBlur = 0; // reset
+    }
+
+    // Calculate current pixel position for rocket
+    const rx = paddingX + (x * scaleX);
+    const ry = ch - paddingY - (y * scaleY);
+
+    // Calculate Tangent Angle for Rocket Rotation
+    let angle = 0;
+    if (!isCrashed && pathRef.current.length > 1) {
+      const prev = pathRef.current[pathRef.current.length - 2];
+      const prevRx = paddingX + (prev.x * scaleX);
+      const prevRy = ch - paddingY - (prev.y * scaleY);
+      const dx = rx - prevRx;
+      const dy = prevRy - ry; // flipped Y
+      angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    }
+
+    const clampedAngle = Math.max(0, Math.min(45, angle)); // Nose always points in direction of travel
+
+    // Particle Exhaust System
+    if (!isCrashed && elapsed > 100) {
+      // Add 2-3 particles per frame based on speed
+      const speed = mult > 10 ? 3 : mult > 5 ? 2 : 1;
+      for (let i = 0; i < speed; i++) {
+        particlesRef.current.push({
+          x: rx - Math.cos(clampedAngle * Math.PI / 180) * 20, // Emit from back of rocket
+          y: ry + Math.sin(clampedAngle * Math.PI / 180) * 20,
+          vx: (Math.random() - 0.5) * 2 - (Math.cos(clampedAngle * Math.PI / 180) * 2), // Fire backwards
+          vy: (Math.random() - 0.5) * 2 + (Math.sin(clampedAngle * Math.PI / 180) * 2),
+          life: 1.0,
+          size: Math.random() * 8 + 4
+        });
+      }
+    }
+
+    // Draw Particles
+    for (let i = particlesRef.current.length - 1; i >= 0; i--) {
+      const p = particlesRef.current[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 0.03;
+      
+      if (p.life <= 0) {
+        particlesRef.current.splice(i, 1);
+      } else {
+        // Color gradient: White -> Yellow -> Orange -> Dark Orange based on life
+        let color = `rgba(255, 255, 255, ${p.life})`;
+        if (p.life < 0.8) color = `rgba(250, 204, 21, ${p.life})`;
+        if (p.life < 0.5) color = `rgba(239, 68, 68, ${p.life})`;
+
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Update DOM Rocket via Transform (GPU Accelerated, bypasses React)
+    if (rocketRef.current) {
+      if (isCrashed) {
+        rocketRef.current.style.display = 'none'; // Hide rocket on crash
+      } else {
+        rocketRef.current.style.display = 'block';
+        // -50% -50% to center it on the coordinates
+        rocketRef.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) rotate(${-clampedAngle}deg)`;
+        
+        // Add dynamic glow to the rocket wrapper
+        const glowColor = mult >= 10 ? 'rgba(239, 68, 68, 0.6)' : mult >= 5 ? 'rgba(250, 204, 21, 0.6)' : 'rgba(0, 230, 118, 0.4)';
+        rocketRef.current.style.filter = `drop-shadow(0 0 ${10 + (mult * 2)}px ${glowColor})`;
+      }
+    }
+
+    return { rx, ry };
+  };
+
   const runLoop = () => {
     const elapsed = Date.now() - startRef.current;
-    // k = 0.0006 creates a smooth but noticeable exponential curve
-    const mult = Math.pow(Math.E, 0.00006 * elapsed);
+    // k = 0.00006 creates a smooth but noticeable exponential curve
+    const mult = Math.pow(Math.E, 0.00006 * Math.max(0, elapsed));
 
     if (mult >= crashPointRef.current) {
       // Crashed!
       setGameState('crashed');
       gameStateRef.current = 'crashed';
       setCurrentMult(crashPointRef.current);
+      
+      drawGraph(elapsed, crashPointRef.current, true); // Final draw call
+
       if (!isMyticketCashedRef.current) {
         useStore.getState().logGameResult('Crash', betRef.current, 0, 'Busted');
       }
       if (!isMutedRef.current) playMine();
       setHistory(prev => [parseFloat(crashPointRef.current.toFixed(2)), ...prev.slice(0, 6)]);
+      
       cancelAnimationFrame(loopRef.current);
       return;
     }
@@ -81,11 +210,13 @@ export const Crash = () => {
       return p;
     }));
 
-    // Auto cashout — read from ref to avoid stale closure
+    // Auto cashout
     const ac = parseFloat(autoCashoutRef.current);
     if (autoCashoutRef.current && ac > 1 && mult >= ac && !isMyticketCashedRef.current) {
       cashOut(mult);
     }
+
+    drawGraph(elapsed, mult, false);
 
     loopRef.current = requestAnimationFrame(runLoop);
   };
@@ -104,6 +235,17 @@ export const Crash = () => {
     setMyWin(0);
     crashPointRef.current = generateCrashPoint();
     startRef.current = Date.now();
+    
+    // Reset engine state
+    pathRef.current = [];
+    particlesRef.current = [];
+    
+    // Size canvas properly
+    if (canvasRef.current) {
+      const parent = canvasRef.current.parentElement;
+      canvasRef.current.width = parent.clientWidth;
+      canvasRef.current.height = parent.clientHeight;
+    }
 
     // Generate bots
     const names = ["Fahd", "qdqdxm", "joshypoododo", "MangoCleanedYou", "e37m", "Olympian", "Nexus", "HyperActive"];
@@ -119,9 +261,24 @@ export const Crash = () => {
     loopRef.current = requestAnimationFrame(runLoop);
   };
 
-  // Clean up animation frame on unmount
+  // Resize listener for canvas
   useEffect(() => {
-    return () => cancelAnimationFrame(loopRef.current);
+    const handleResize = () => {
+      if (canvasRef.current) {
+        const parent = canvasRef.current.parentElement;
+        canvasRef.current.width = parent.clientWidth;
+        canvasRef.current.height = parent.clientHeight;
+        if (gameStateRef.current !== 'rising') {
+           drawGraph(0, 1.00, false); // Draw initial state
+        }
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    setTimeout(handleResize, 100); // Initial sizing
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(loopRef.current);
+    };
   }, []);
 
   return (
@@ -250,7 +407,7 @@ export const Crash = () => {
       </div>
 
       {/* VIEWPORT */}
-      <div className="game-viewport crash-viewport">
+      <div className={`game-viewport crash-viewport ${gameState === 'crashed' ? 'screen-shake' : ''}`}>
         <ThemedBackdrop />
 
         {/* TOP VIEWPORT BAR */}
@@ -271,12 +428,16 @@ export const Crash = () => {
           </div>
         </div>
 
-        <div className="viewport-content">
+        <div className="viewport-content" style={{ position: 'relative', overflow: 'hidden' }}>
+          
+          {/* HTML5 CANVAS FOR CURVE & EXHAUST */}
+          <canvas 
+            ref={canvasRef} 
+            style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
+          />
+
           <div className="multiplier-container" style={{ zIndex: 10 }}>
-            <motion.h1
-              key={currentMult.toFixed(2)}
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
+            <h1
               className={`multiplier-val ${gameState === 'crashed' ? 'crashed-color' : ''}`}
               style={{ 
                 color: gameState === 'crashed' ? '#ef4444' : 
@@ -284,67 +445,67 @@ export const Crash = () => {
                        currentMult >= 5 ? '#facc15' : 
                        currentMult >= 2 ? '#00e676' : '#ffffff',
                 textShadow: currentMult >= 2 ? `0 0 20px ${currentMult >= 10 ? '#ef4444' : currentMult >= 5 ? '#facc15' : '#00e676'}` : 'none',
-                transition: 'color 0.3s ease, text-shadow 0.3s ease'
+                transition: 'color 0.3s ease, text-shadow 0.3s ease',
+                transform: gameState === 'crashed' ? 'scale(1)' : `scale(${1 + (currentMult * 0.01)})`
               }}
             >
               {currentMult.toFixed(2)}x
-            </motion.h1>
+            </h1>
             <div className="multiplier-label">
               {gameState === 'crashed' ? 'Crashed' : 'Current payout'}
             </div>
           </div>
 
-          {/* ROCKET ANIMATION */}
-          {gameState === 'rising' && (
-            <motion.div
-              className="rocket-wrapper"
-              animate={{
-                x: [0, 400],
-                y: [0, -300],
-                rotate: [45, 45, 48, 42, 45]
-              }}
-              style={{
-                position: 'absolute',
-                left: '20%',
-                bottom: '15%',
-                zIndex: 5
-              }}
-              transition={{
-                x: { duration: Math.max(1, (crashPointRef.current - 1) * 3), ease: [0.5, 0, 1, 0.5] },
-                y: { duration: Math.max(1, (crashPointRef.current - 1) * 3), ease: [0.5, 0, 1, 0.5] },
-                rotate: { repeat: Infinity, duration: 0.2 }
-              }}
-            >
-              {/* High Quality SVG Rocket */}
-              <div className="rocket-flame" style={{ position: 'absolute', bottom: '-20px', left: '10px', width: '20px', height: '40px', background: 'linear-gradient(to bottom, #facc15, #ef4444, transparent)', filter: 'blur(4px)', animation: 'flicker 0.1s infinite alternate' }} />
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transform: 'rotate(45deg)', dropShadow: '0 0 10px rgba(255,255,255,0.5)' }}>
-                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
-              </svg>
-            </motion.div>
-          )}
+          {/* ROCKET DOM ELEMENT */}
+          <div 
+            ref={rocketRef}
+            className={`premium-rocket ${gameState === 'waiting' ? 'idle-bob' : ''}`}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '120px', // 300% increase from old small size
+              height: '120px',
+              zIndex: 5,
+              display: gameState === 'crashed' ? 'none' : 'block',
+              transform: 'translate3d(40px, calc(100% - 40px), 0) translate(-50%, -50%) rotate(45deg)' // Default wait position
+            }}
+          >
+            <img 
+               src="/rocket.png" 
+               alt="Rocket" 
+               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+               onError={(e) => {
+                 // Fallback if image not uploaded yet
+                 e.target.style.display = 'none';
+                 e.target.nextSibling.style.display = 'block';
+               }}
+            />
+            {/* Fallback SVG if image is missing */}
+            <svg style={{ display: 'none', width: '100%', height: '100%' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+            </svg>
+          </div>
 
           {gameState === 'crashed' && (
             <motion.div 
               className="explosion-sprite" 
               initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: [1, 2, 3], opacity: [1, 0.8, 0] }}
-              transition={{ duration: 0.5 }}
-              style={{ position: 'absolute', left: '40%', bottom: '40%', fontSize: '100px', filter: 'drop-shadow(0 0 20px #ef4444)' }}
+              animate={{ scale: [1, 3, 5], opacity: [1, 0.8, 0] }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', fontSize: '140px', filter: 'drop-shadow(0 0 40px #ef4444)' }}
             >
               💥
             </motion.div>
           )}
         </div>
 
-        {/* BOTTOM AXIS */}
-        <div className="bottom-axis">
-          <span>0s</span><span>2s</span><span>4s</span><span>6s</span><span>8s</span><span>10s</span>
-        </div>
       </div>
 
     </div>
   );
 };
+
