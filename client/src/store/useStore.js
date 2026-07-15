@@ -174,6 +174,7 @@ export const useStore = create(
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           username: state.user.name,
+          avatarUrl: state.user.avatar,
           game,
           amount: wager,
           potentialPayout: payout,

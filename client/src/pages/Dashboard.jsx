@@ -156,7 +156,14 @@ const LiveBetsTable = () => {
                         <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
                         {bet.game}
                       </td>
-                      <td className="lb-username">{bet.username}</td>
+                      <td className="lb-username">
+                        <img 
+                          src={bet.avatarUrl || `https://api.dicebear.com/9.x/avataaars/svg?seed=${bet.username}&backgroundColor=transparent`} 
+                          alt="avatar" 
+                          className="lb-avatar" 
+                        />
+                        <span>{bet.username}</span>
+                      </td>
                       <td className="lb-amount">
                         <VaultIcon size={14} color="#818ebb" />
                         <span>{formatAmount(bet.amount)}</span>

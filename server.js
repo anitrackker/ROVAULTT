@@ -1103,8 +1103,8 @@ global.liveBetsFeed = global.liveBetsFeed || [];
 global.housePnL = global.housePnL || { depositsUsd: 15420.5, withdrawalsUsd: 8210.2, ggr: 4125.0 };
 
 // Helper to log a bet to the global feed
-global.logBet = (username, game, amount, potentialPayout, details) => {
-  global.liveBetsFeed.unshift({ id: Date.now()+Math.random(), username, game, amount, potentialPayout, details, time: new Date() });
+global.logBet = (username, game, amount, potentialPayout, details, avatarUrl) => {
+  global.liveBetsFeed.unshift({ id: Date.now()+Math.random(), username, game, amount, potentialPayout, details, avatarUrl, time: new Date() });
   if (global.liveBetsFeed.length > 50) global.liveBetsFeed.pop();
 };
 
@@ -1158,7 +1158,7 @@ app.post('/api/admin/withdrawals/:id/approve', async (c) => {
 app.post('/api/admin/log-bet', async (c) => {
   try {
     const body = await c.req.json();
-    global.logBet(body.username, body.game, body.amount, body.potentialPayout, body.details);
+    global.logBet(body.username, body.game, body.amount, body.potentialPayout, body.details, body.avatarUrl);
     return c.json({ success: true });
   } catch (e) {
     return c.json({ success: false });
