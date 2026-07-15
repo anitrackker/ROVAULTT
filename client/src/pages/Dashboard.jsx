@@ -7,32 +7,24 @@ import {
 import { VaultIcon } from '../components/VaultIcon';
 import './Dashboard.css';
 
-const GameCard = ({ title, desc, icon: Icon, color, path }) => {
+const GameCard = ({ title, badge, bgImage, path }) => {
   const navigate = useNavigate();
 
   return (
     <motion.div 
-      className="game-card"
+      className="game-card-image"
       onClick={() => navigate(path)}
       whileHover={{ y: -5, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <motion.div 
-        className="gc-icon-wrapper" 
-        style={{ color: color || 'var(--text-main)' }}
-        whileHover={{ rotate: [-5, 5, -5, 5, 0], transition: { duration: 0.5 } }}
-      >
-        <Icon size={48} strokeWidth={1.5} />
-      </motion.div>
-      <div className="gc-title">{title}</div>
-      <div className="gc-desc">{desc}</div>
-      <motion.button 
-        className="btn btn-outline-purple w-full"
-        whileHover={{ scale: 1.05, backgroundColor: 'var(--accent-purple)', color: '#fff' }}
-        whileTap={{ scale: 0.95 }}
-      >
-        Play Now
-      </motion.button>
+      <div className="gc-title-overlay">{title.toUpperCase()}</div>
+      
+      {badge && (
+        <div className="gc-badge">
+          {badge}
+        </div>
+      )}
       
       {/* Hover glow effect */}
       <div className="gc-glow" />
@@ -185,15 +177,12 @@ export const Dashboard = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, staggerChildren: 0.1 }}
       >
-        <GameCard title="Crash" desc="Cash out before you crash." icon={Rocket} path="/crash" />
-        <GameCard title="Slots" desc="Spin and win big prizes." icon={Cherry} path="/slots" />
-        <GameCard title="Blackjack" desc="Classic game, skill meets luck." icon={Spade} path="/blackjack" />
-        <GameCard title="Cases" desc="Open cases, win rewards." icon={Briefcase} path="/cases" />
-        
-        <GameCard title="Dice" desc="Roll the dice, win big." icon={Dices} path="/dice" />
-        <GameCard title="Mines" desc="Avoid the mines, win big." icon={Bomb} path="/mines" />
-        <GameCard title="Plinko" desc="Drop, bounce, and multiply." icon={Triangle} path="/plinko" />
-        <GameCard title="VIP Club" desc="Exclusive rewards & benefits." icon={Crown} color="#facc15" path="/vip" />
+        <GameCard title="Crash" badge="Popular" bgImage="/games/Crash.png" path="/crash" />
+        <GameCard title="Slots" badge="Popular" bgImage="/games/Roulette.png" path="/slots" />
+        <GameCard title="Blackjack" badge="New Release" bgImage="/games/BlackJack.png" path="/blackjack" />
+        <GameCard title="Cases" badge="Popular" bgImage="/games/Cases.png" path="/cases" />
+        <GameCard title="Dice" badge="Popular" bgImage="/games/Dies.png" path="/dice" />
+        <GameCard title="Mines" badge="New Release" bgImage="/games/Mines.png" path="/mines" />
       </motion.div>
 
     </div>
