@@ -14,7 +14,7 @@
   background: linear-gradient(135deg, #181818 0%, #0f0f0f 100%);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 60px;
+  padding: 30px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,31 +29,31 @@
 }
 
 .hero-text h1 {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: 900;
   color: #fff;
-  margin-bottom: 20px;
-  letter-spacing: -1.5px;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
   line-height: 1.1;
 }
 
 .hero-text p {
   color: var(--text-muted);
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
 .btn-lg {
-  padding: 14px 32px;
-  font-size: 16px;
+  padding: 12px 24px;
+  font-size: 15px;
 }
 
 .hero-visual {
   position: relative;
   z-index: 1;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,8 +67,8 @@
 
 .hero-glow-orb {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 180px;
+  height: 180px;
   background: var(--accent-purple);
   border-radius: 50%;
   filter: blur(80px);
@@ -234,4 +234,161 @@
   100% {
     transform: translateX(-33.33%);
   }
+}
+
+/* ═══════════════════════════════════════ */
+/* LIVE BETS TABLE                        */
+/* ═══════════════════════════════════════ */
+.live-bets-section {
+  margin-top: 40px;
+}
+
+.live-bets-section .section-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #05d3dd;
+  display: inline-block;
+  animation: lb-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 6px #05d3dd;
+}
+
+@keyframes lb-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.live-bets-table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.live-bets-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.live-bets-table thead tr {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.live-bets-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.live-bets-table tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.3s;
+}
+
+.live-bets-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.live-bets-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.live-bets-table td {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+/* New row highlight */
+.lb-row-new {
+  animation: lb-row-flash 2s ease-out;
+}
+
+@keyframes lb-row-flash {
+  0% { background: rgba(5, 211, 221, 0.15); }
+  100% { background: transparent; }
+}
+
+/* Game column */
+.lb-game {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.lb-game-icon {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+}
+
+/* Username */
+.lb-username {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Amount */
+.lb-amount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+/* Multiplier */
+.lb-multiplier span {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.lb-mult-high {
+  color: #05d3dd !important;
+}
+
+/* Payout */
+.lb-payout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.lb-payout-win {
+  color: #05d3dd;
+}
+
+.lb-payout-loss {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Time */
+.lb-time {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty state */
+.lb-empty-row td {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 15px;
 }

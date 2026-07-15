@@ -1,11 +1,12 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Rocket, Cherry, Spade, Briefcase, 
-  Dices, Bomb, Triangle, Crown 
-} from 'lucide-react';
 import { VaultIcon } from '../components/VaultIcon';
 import './Dashboard.css';
+
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000/api'
+  : 'https://rovault.onrender.com/api';
 
 const GameCard = ({ title, badge, bgImage, path }) => {
   const navigate = useNavigate();
@@ -61,10 +62,149 @@ const LiveTicker = () => {
   );
 };
 
+const formatTime = (dateStr) => {
+  try {
+    const d = new Date(dateStr);
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return '--:--';
+  }
+};
+
+const formatAmount = (val) => {
+  if (val == null || isNaN(val)) return '0';
+  return Math.floor(val).toLocaleString();
+};
+
+const LiveBetsTable = () => {
+  const [bets, setBets] = useState([]);
+  const [newIds, setNewIds] = useState(new Set());
+  const prevIdsRef = useRef(new Set());
+
+  useEffect(() => {
+    const fetchBets = async () => {
+      try {
+        const res = await fetch(`${API_URL}/live-feed`);
+        const data = await res.json();
+        if (data.bets) {
+          const currentIds = new Set(data.bets.map(b => b.id));
+          const freshIds = new Set();
+          currentIds.forEach(id => {
+            if (!prevIdsRef.current.has(id)) freshIds.add(id);
+          });
+          
+          setNewIds(freshIds);
+          setBets(data.bets.slice(0, 15));
+          prevIdsRef.current = currentIds;
+
+          // Clear highlight after animation
+          if (freshIds.size > 0) {
+            setTimeout(() => setNewIds(new Set()), 2500);
+          }
+        }
+      } catch (e) { /* silent */ }
+    };
+
+    fetchBets();
+    const interval = setInterval(fetchBets, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="live-bets-section">
+      <div className="section-header">
+        <h2>
+          <span className="lb-dot" />
+          Live Bets
+        </h2>
+      </div>
+
+      <div className="live-bets-table-wrapper">
+        <table className="live-bets-table">
+          <thead>
+            <tr>
+              <th>Game</th>
+              <th>Username</th>
+              <th>Amount</th>
+              <th>Multiplier</th>
+              <th>Payout</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <AnimatePresence initial={false}>
+              {bets.length === 0 ? (
+                <tr className="lb-empty-row">
+                  <td colSpan="6">No bets yet — be the first!</td>
+                </tr>
+              ) : (
+                bets.map((bet) => {
+                  const multiplier = bet.amount > 0 ? (bet.potentialPayout / bet.amount) : 0;
+                  const isWin = bet.potentialPayout > 0;
+                  const isNew = newIds.has(bet.id);
+
+                  return (
+                    <motion.tr
+                      key={bet.id}
+                      className={`lb-row${isNew ? ' lb-row-new' : ''}`}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <td className="lb-game">
+                        <span className="lb-game-icon">{getGameIcon(bet.game)}</span>
+                        {bet.game}
+                      </td>
+                      <td className="lb-username">{bet.username}</td>
+                      <td className="lb-amount">
+                        <VaultIcon size={14} color="#818ebb" />
+                        <span>{formatAmount(bet.amount)}</span>
+                      </td>
+                      <td className="lb-multiplier">
+                        <span className={multiplier >= 2 ? 'lb-mult-high' : ''}>
+                          x{multiplier.toFixed(2)}
+                        </span>
+                      </td>
+                      <td className={`lb-payout ${isWin ? 'lb-payout-win' : 'lb-payout-loss'}`}>
+                        <VaultIcon size={14} color={isWin ? '#05d3dd' : 'rgba(255,255,255,0.4)'} />
+                        <span>
+                          {isWin ? '+' : ''}{formatAmount(bet.potentialPayout)}
+                        </span>
+                      </td>
+                      <td className="lb-time">{formatTime(bet.time)}</td>
+                    </motion.tr>
+                  );
+                })
+              )}
+            </AnimatePresence>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+function getGameIcon(game) {
+  const g = (game || '').toLowerCase();
+  if (g.includes('crash')) return '🚀';
+  if (g.includes('dice')) return '🎲';
+  if (g.includes('mine')) return '💎';
+  if (g.includes('plinko')) return '📍';
+  if (g.includes('blackjack')) return '🃏';
+  if (g.includes('slot') || g.includes('roulette')) return '🎰';
+  if (g.includes('case')) return '📦';
+  if (g.includes('coinflip') || g.includes('coin')) return '🪙';
+  return '🎮';
+}
+
 export const Dashboard = () => {
   return (
     <div className="dashboard-container">
       
+      {/* LIVE TICKER */}
+      <LiveTicker />
+
       {/* HERO BANNER */}
       <motion.div 
         className="hero-banner"
@@ -162,9 +302,6 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* LIVE TICKER */}
-      <LiveTicker />
-
       {/* POPULAR GAMES */}
       <div className="section-header">
         <h2>Popular Games</h2>
@@ -184,6 +321,9 @@ export const Dashboard = () => {
         <GameCard title="Dice" badge="Popular" bgImage="/games/Dies.png" path="/dice" />
         <GameCard title="Mines" badge="New Release" bgImage="/games/Mines.png" path="/mines" />
       </motion.div>
+
+      {/* LIVE BETS TABLE */}
+      <LiveBetsTable />
 
     </div>
   );

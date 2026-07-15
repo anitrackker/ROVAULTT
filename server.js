@@ -1169,6 +1169,11 @@ app.get('/api/admin/live-bets', async (c) => {
   return c.json({ bets: global.liveBetsFeed });
 });
 
+// Public live feed for dashboard (no auth required)
+app.get('/api/live-feed', async (c) => {
+  return c.json({ bets: global.liveBetsFeed });
+});
+
 app.get('/api/admin/analytics', async (c) => {
   try {
     const { data: wallets } = await supabase.from('wallets').select('*');
