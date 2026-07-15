@@ -23,23 +23,24 @@ const RealisticWithdrawAnimation = ({ netCrypto, symbol, address }) => {
     let hash = '0x';
     for (let i = 0; i < 40; i++) hash += chars[Math.floor(Math.random() * 16)];
 
-    const t1 = setTimeout(() => setStep(1), 1000);
-    const t2 = setTimeout(() => {
-      setTxHash(hash);
-      setStep(2);
-    }, 2200);
-    const t3 = setTimeout(() => setStep(3), 3400);
-    const t4 = setTimeout(() => setStep(4), 4800);
+    const delay1 = 1200 + Math.random() * 800;
+    const delay2 = delay1 + 1500 + Math.random() * 1200;
+    const delay3 = delay2 + 2500 + Math.random() * 2000;
 
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
+    const t1 = setTimeout(() => {
+      setTxHash(hash);
+      setStep(1);
+    }, delay1);
+    const t2 = setTimeout(() => setStep(2), delay2);
+    const t3 = setTimeout(() => setStep(3), delay3);
+
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, []);
 
   const steps = [
-    { label: 'Initiating Transfer...', active: step === 0 },
-    { label: 'Building Transaction...', active: step === 1 },
-    { label: 'Signing Transaction...', active: step === 2 },
-    { label: 'Broadcasting to Network...', active: step === 3 },
-    { label: 'Awaiting Confirmations...', active: step === 4 }
+    { label: 'Building Transaction...', active: step === 0 },
+    { label: 'Broadcasting to Network...', active: step === 1 },
+    { label: 'Awaiting Confirmations...', active: step === 2 }
   ];
 
   return (
@@ -645,7 +646,7 @@ const DefaultWithdraw = ({
           address: address ? `${address.slice(0,8)}…${address.slice(-6)}` : '—',
         });
         setDefState('done');
-      }, 5200);
+      }, 8500);
     }
   };
 
