@@ -272,10 +272,16 @@
 }
 
 .live-bets-table {
-  width: 100%;
+  display: table !important;
+  width: 100% !important;
   border-collapse: collapse;
-  table-layout: fixed;
+  table-layout: fixed !important;
 }
+
+.live-bets-table thead { display: table-header-group !important; }
+.live-bets-table tbody { display: table-row-group !important; }
+.live-bets-table tr { display: table-row !important; }
+.live-bets-table th, .live-bets-table td { display: table-cell !important; }
 
 /* Column Widths */
 .live-bets-table th:nth-child(1), .live-bets-table td:nth-child(1) { width: 15%; }
@@ -362,6 +368,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
+  flex-shrink: 1;
 }
 
 .lb-avatar {
@@ -370,6 +378,7 @@
   border-radius: 50%;
   object-fit: cover;
   background-color: var(--bg-body);
+  flex-shrink: 0;
 }
 
 /* Amount */
@@ -420,4 +429,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
