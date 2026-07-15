@@ -3,9 +3,6 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
 }
 
 /* HERO BANNER */
@@ -69,7 +66,7 @@
   position: absolute;
   width: 250px;
   height: 250px;
-  background: var(--accent-purple);
+  background: var(--accent-green);
   border-radius: 50%;
   filter: blur(80px);
   opacity: 0.15;
@@ -154,7 +151,7 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, var(--accent-purple-dim) 0%, transparent 60%);
+  background: radial-gradient(circle, var(--accent-green-dim) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.3s;
   z-index: 0;
@@ -167,66 +164,5 @@
 
 .game-card:hover {
   border-color: rgba(255,255,255,0.1);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-purple-dim);
-}
-
-/* LIVE TICKER */
-.live-ticker-wrapper {
-  overflow: hidden;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 12px 0;
-  margin-bottom: 40px;
-  display: flex;
-  white-space: nowrap;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-.live-ticker-track {
-  display: flex;
-  animation: slide-ticker 30s linear infinite;
-}
-
-.live-ticker-track:hover {
-  animation-play-state: paused;
-}
-
-.ticker-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0 30px;
-  font-size: 14px;
-  color: var(--text-muted);
-  border-right: 1px solid var(--border-color);
-}
-
-.ticker-user {
-  font-weight: 700;
-  color: #fff;
-}
-
-.ticker-amount {
-  font-weight: 800;
-  color: #facc15;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.ticker-game {
-  color: var(--accent-purple);
-  font-weight: 600;
-}
-
-@keyframes slide-ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-33.33%);
-  }
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px var(--accent-green-dim);
 }

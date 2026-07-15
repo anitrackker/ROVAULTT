@@ -11,9 +11,9 @@
   --border-light: rgba(255, 255, 255, 0.1);
   
   /* Brand Accents */
-  --accent-purple: #9333ea; /* Darker modern purple */
-  --accent-purple-glow: rgba(147, 51, 234, 0.4);
-  --accent-purple-dim: rgba(147, 51, 234, 0.1);
+  --accent-green: #00e676; /* Vibrant emerald/neon green */
+  --accent-green-glow: rgba(0, 230, 118, 0.4);
+  --accent-green-dim: rgba(0, 230, 118, 0.1);
   
   /* Text */
   --text-main: #ffffff;
@@ -79,6 +79,6 @@ html, body {
 
 /* Smooth selection */
 ::selection {
-  background: var(--accent-purple-dim);
-  color: var(--accent-purple);
+  background: var(--accent-green-dim);
+  color: var(--accent-green);
 }

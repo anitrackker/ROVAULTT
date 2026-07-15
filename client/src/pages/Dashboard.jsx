@@ -17,18 +17,14 @@ const GameCard = ({ title, desc, icon: Icon, color, path }) => {
       whileHover={{ y: -5, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
     >
-      <motion.div 
-        className="gc-icon-wrapper" 
-        style={{ color: color || 'var(--text-main)' }}
-        whileHover={{ rotate: [-5, 5, -5, 5, 0], transition: { duration: 0.5 } }}
-      >
+      <div className="gc-icon-wrapper" style={{ color: color || 'var(--text-main)' }}>
         <Icon size={48} strokeWidth={1.5} />
-      </motion.div>
+      </div>
       <div className="gc-title">{title}</div>
       <div className="gc-desc">{desc}</div>
       <motion.button 
-        className="btn btn-outline-purple w-full"
-        whileHover={{ scale: 1.05, backgroundColor: 'var(--accent-purple)', color: '#fff' }}
+        className="btn btn-outline-green w-full"
+        whileHover={{ scale: 1.05, backgroundColor: 'var(--accent-green)', color: '#000' }}
         whileTap={{ scale: 0.95 }}
       >
         Play Now
@@ -37,35 +33,6 @@ const GameCard = ({ title, desc, icon: Icon, color, path }) => {
       {/* Hover glow effect */}
       <div className="gc-glow" />
     </motion.div>
-  );
-};
-
-const LiveTicker = () => {
-  // Mock data for recent winnings
-  const recentWins = [
-    { user: 'Player123', amount: 500, game: 'Crash' },
-    { user: 'LuckyDog', amount: 1250, game: 'Slots' },
-    { user: 'HighRoller', amount: 50, game: 'Mines' },
-    { user: 'NoobMaster', amount: 300, game: 'Dice' },
-    { user: 'VaultKing', amount: 888, game: 'Plinko' },
-    { user: 'Sniper007', amount: 2100, game: 'Blackjack' },
-  ];
-
-  return (
-    <div className="live-ticker-wrapper">
-      <div className="live-ticker-track">
-        {/* Render twice for seamless loop */}
-        {[...recentWins, ...recentWins, ...recentWins].map((win, i) => (
-          <div key={i} className="ticker-item">
-            <span className="ticker-user">{win.user}</span> won{' '}
-            <span className="ticker-amount">
-              <VaultIcon size={14} color="#facc15" /> {win.amount}
-            </span>{' '}
-            in <span className="ticker-game">{win.game}</span>
-          </div>
-        ))}
-      </div>
-    </div>
   );
 };
 
@@ -169,9 +136,6 @@ export const Dashboard = () => {
           <div className="hero-glow-orb" />
         </div>
       </motion.div>
-
-      {/* LIVE TICKER */}
-      <LiveTicker />
 
       {/* POPULAR GAMES */}
       <div className="section-header">
