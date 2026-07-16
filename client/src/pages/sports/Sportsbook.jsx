@@ -476,6 +476,8 @@ export const Sportsbook = () => {
             clock: comp.status.displayClock || "0'",
             homeScore,
             awayScore,
+            homeName,
+            awayName,
             markets: subMarkets
           };
         }).filter(Boolean);
@@ -663,33 +665,64 @@ export const Sportsbook = () => {
     
     if (!chartHistoryRef.current[key]) {
       const data = [];
-      const numPoints = 80; // Much longer history so it's not vertically squished
       
-      let prices = currentPrices.map(curr => {
-        // If it's a blowout (99% or 1%), simulate a "comeback" or "choke" by starting the odds inversed!
-        if (curr >= 85) return 20 + Math.random() * 15; // Winner started as underdog
-        if (curr <= 15) return 50 + Math.random() * 20; // Loser started as favorite
-        return (100 / currentPrices.length) + (Math.random() - 0.5) * 15;
-      });
-      
-      let sum = prices.reduce((a, b) => a + b, 0);
-      prices = prices.map(p => Number(((p / sum) * 100).toFixed(2)));
+      if (selectedMatch.isWorldCup && activeMarket.id.includes('wc-m-ml')) {
+        // Generate EXACT history by replaying the match clock!
+        const maxMins = selectedMatch.status === 'post' ? 90 : (parseInt(selectedMatch.clock) || 45);
+        const homeGoals = [];
+        const awayGoals = [];
+        
+        // Distribute goals throughout the match timeline
+        for(let g = 0; g < selectedMatch.homeScore; g++) homeGoals.push(Math.floor(Math.random() * (maxMins - 10)) + 5);
+        for(let g = 0; g < selectedMatch.awayScore; g++) awayGoals.push(Math.floor(Math.random() * (maxMins - 10)) + 5);
+        homeGoals.sort((a,b)=>a-b);
+        awayGoals.sort((a,b)=>a-b);
 
-      for (let i = 0; i < numPoints; i++) {
-        data.push({ time: i, prices: [...prices] });
+        for (let m = 0; m <= maxMins; m += 2) {
+          const simHome = homeGoals.filter(gm => gm <= m).length;
+          const simAway = awayGoals.filter(gm => gm <= m).length;
+          // Use the real underlying probability calculator to get the real odds at this minute
+          const probs = calculateMarketProbs(simHome, simAway, m, m === 90 ? 'post' : 'in', selectedMatch.homeName, selectedMatch.awayName);
+          
+          data.push({
+            time: m,
+            prices: [
+              Number((probs.home * 100).toFixed(2)),
+              Number((probs.draw * 100).toFixed(2)),
+              Number((probs.away * 100).toFixed(2))
+            ]
+          });
+        }
+        data.push({ time: maxMins + 1, prices: currentPrices });
+      } else {
+        const numPoints = 80; // Much longer history so it's not vertically squished
         
-        const progress = i / numPoints;
-        // Exponentially pull towards the real current prices as time goes on
-        const pullFactor = 0.01 + (Math.pow(progress, 3) * 0.25);
-        
-        prices = prices.map((p, idx) => {
-          const move = (currentPrices[idx] - p) * pullFactor + (Math.random() - 0.5) * 6;
-          return Math.max(0.5, Math.min(99.5, p + move));
+        let prices = currentPrices.map(curr => {
+          // If it's a blowout (99% or 1%), simulate a "comeback" or "choke" by starting the odds inversed!
+          if (curr >= 85) return 20 + Math.random() * 15; // Winner started as underdog
+          if (curr <= 15) return 50 + Math.random() * 20; // Loser started as favorite
+          return (100 / currentPrices.length) + (Math.random() - 0.5) * 15;
         });
-        const stepSum = prices.reduce((a, b) => a + b, 0);
-        prices = prices.map(p => Number(((p / stepSum) * 100).toFixed(2)));
+        
+        let sum = prices.reduce((a, b) => a + b, 0);
+        prices = prices.map(p => Number(((p / sum) * 100).toFixed(2)));
+
+        for (let i = 0; i < numPoints; i++) {
+          data.push({ time: i, prices: [...prices] });
+          
+          const progress = i / numPoints;
+          // Exponentially pull towards the real current prices as time goes on
+          const pullFactor = 0.01 + (Math.pow(progress, 3) * 0.25);
+          
+          prices = prices.map((p, idx) => {
+            const move = (currentPrices[idx] - p) * pullFactor + (Math.random() - 0.5) * 6;
+            return Math.max(0.5, Math.min(99.5, p + move));
+          });
+          const stepSum = prices.reduce((a, b) => a + b, 0);
+          prices = prices.map(p => Number(((p / stepSum) * 100).toFixed(2)));
+        }
+        data.push({ time: numPoints, prices: currentPrices });
       }
-      data.push({ time: numPoints, prices: currentPrices });
       chartHistoryRef.current[key] = data;
     } else {
       const history = [...chartHistoryRef.current[key]];
