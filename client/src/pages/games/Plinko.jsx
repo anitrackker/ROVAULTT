@@ -27,7 +27,7 @@ const MULTIPLIER_TABLES = {
     10: [15, 5.0, 1.2, 0.3, 0.1, 0.0, 0.1, 0.3, 1.2, 5.0, 15],
     12: [25, 8.0, 2.0, 0.5, 0.1, 0.0, 0.0, 0.0, 0.1, 0.5, 2.0, 8.0, 25],
     14: [40, 12, 3.5, 0.8, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.2, 0.8, 3.5, 12, 40],
-    16: [70, 20, 5.0, 1.2, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 1.2, 5.0, 20, 70],
+    16: [70, 20, 5.0, 1.2, 0.3, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 1.2, 5.0, 20, 70],
   },
 };
 
@@ -183,8 +183,8 @@ export const Plinko = () => {
 
           const distFromCenter = layout.width / 2 - ball.x;
           // Heavy center bias to ensure the house edge. Balls are physically pulled to the center.
-          const centerPull = distFromCenter * 0.25; 
-          ball.vx += (Math.random() - 0.5) * 16 + centerPull;
+          const centerPull = distFromCenter * 0.95; 
+          ball.vx += (Math.random() - 0.5) * 18 + centerPull;
 
           peg.hit = 1;
           setTimeout(() => { peg.hit = 0; }, 150);

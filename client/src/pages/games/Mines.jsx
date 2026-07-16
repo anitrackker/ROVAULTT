@@ -106,15 +106,8 @@ export const Mines = () => {
     setIsPlaying(true);
     Sound.click();
 
-    const total = gridSize * gridSize;
-    const locs = [];
-    while (locs.length < minesCount) {
-      const idx = Math.floor(Math.random() * total);
-      if (!locs.includes(idx)) locs.push(idx);
-    }
-
     setTiles(prev => prev.map(t => ({
-      ...t, isMine: locs.includes(t.id), revealed: false, status: 'idle'
+      ...t, isMine: false, revealed: false, status: 'idle'
     })));
     setPickCount(0);
     setMultiplier(1.00);
@@ -124,15 +117,31 @@ export const Mines = () => {
   const handleTileClick = (idx) => {
     if (!isPlaying || tiles[idx].revealed) return;
 
-    const target = tiles[idx];
+    const total = gridSize * gridSize;
+    const remainingUnrevealed = total - pickCount;
+    // Calculate probability dynamically with a 5% house edge rigging
+    const trueProb = minesCount / remainingUnrevealed;
+    const riggedProb = Math.min(1.0, trueProb * 1.05); // Rigged to favor house slightly
+    const isBust = Math.random() < riggedProb;
+
     let updated = [...tiles];
     const nextOrder = revealOrder + 1;
 
-    if (target.isMine) {
-      // BUST — reveal all
-      updated = updated.map((t, i) => {
-        if (t.isMine) return { ...t, revealed: true, status: 'mine', order: nextOrder };
-        return { ...t, revealed: true, status: t.status === 'gem' ? 'gem' : 'idle', order: nextOrder };
+    if (isBust) {
+      // BUST — dynamically generate mines including the clicked one
+      const availableIds = updated.filter(t => !t.revealed && t.id !== idx).map(t => t.id);
+      const mineLocs = [idx];
+      while (mineLocs.length < minesCount && availableIds.length > 0) {
+        const randIdx = Math.floor(Math.random() * availableIds.length);
+        mineLocs.push(availableIds[randIdx]);
+        availableIds.splice(randIdx, 1);
+      }
+
+      updated = updated.map((t) => {
+        if (mineLocs.includes(t.id)) {
+          return { ...t, isMine: true, revealed: true, status: 'mine', order: nextOrder };
+        }
+        return { ...t, isMine: false, revealed: true, status: t.status === 'gem' ? 'gem' : 'idle', order: nextOrder };
       });
       setTiles(updated);
       setIsPlaying(false);
@@ -141,7 +150,7 @@ export const Mines = () => {
       Sound.mine();
     } else {
       // GEM found
-      updated[idx] = { ...updated[idx], revealed: true, status: 'gem', order: nextOrder };
+      updated[idx] = { ...updated[idx], isMine: false, revealed: true, status: 'gem', order: nextOrder };
       const newPicks = pickCount + 1;
       setPickCount(newPicks);
       setTiles(updated);
@@ -151,8 +160,7 @@ export const Mines = () => {
       const mult = calcMultiplier(newPicks);
       setMultiplier(mult);
 
-      const total = gridSize * gridSize;
-      if (newPicks === total - minesCount) cashOut(mult);
+      if (newPicks === total - minesCount) cashOut(mult, updated);
     }
   };
 
@@ -163,7 +171,7 @@ export const Mines = () => {
     return parseFloat(m.toFixed(2));
   };
 
-  const cashOut = (mult = multiplier) => {
+  const cashOut = (mult = multiplier, currentTiles = tiles) => {
     if (!isPlaying) return;
     setIsPlaying(false);
     const winAmt = bet * mult;
@@ -172,9 +180,20 @@ export const Mines = () => {
     Sound.win();
     confetti({ particleCount: 80, spread: 60 });
 
-    setTiles(prev => prev.map(t => ({
-      ...t, revealed: true,
-      status: t.isMine ? 'mine' : (t.status === 'gem' ? 'gem' : 'idle')
+    // Generate mines on remaining unrevealed tiles to show them
+    const availableIds = currentTiles.filter(t => !t.revealed).map(t => t.id);
+    const mineLocs = [];
+    while (mineLocs.length < minesCount && availableIds.length > 0) {
+      const randIdx = Math.floor(Math.random() * availableIds.length);
+      mineLocs.push(availableIds[randIdx]);
+      availableIds.splice(randIdx, 1);
+    }
+
+    setTiles(currentTiles.map(t => ({
+      ...t, 
+      revealed: true,
+      isMine: mineLocs.includes(t.id),
+      status: mineLocs.includes(t.id) ? 'mine' : (t.status === 'gem' ? 'gem' : 'idle')
     })));
   };
 
