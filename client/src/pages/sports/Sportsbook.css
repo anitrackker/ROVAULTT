@@ -99,12 +99,7 @@
   box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
 }
 
-@media (max-width: 1200px) {
-  .sports-layout,
-  .terminal-layout {
-    grid-template-columns: 1fr;
-  }
-}
+
 
 .markets-grid {
   display: grid;
@@ -329,6 +324,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .market-selector {
@@ -774,4 +770,14 @@
   0% { transform: scale(0.9); opacity: 0.6; }
   50% { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+@media (max-width: 1200px) {
+  .sports-layout,
+  .terminal-layout {
+    grid-template-columns: 1fr;
+  }
+  .sports-sidebar {
+    width: 100%;
+  }
 }
