@@ -199,12 +199,19 @@ export const Slots = () => {
               onClick={() => { playClick(); setActiveGameId(game.id); }}
               style={{ borderColor: game.color, boxShadow: `0 10px 30px ${game.color}33` }}
             >
-              <div className="sm-card-icon" style={{ color: game.color, filter: `drop-shadow(0 0 15px ${game.color})` }}>
-                {THEME_SYMBOLS[game.id][THEME_SYMBOLS[game.id].length - 1].char}
+              <img 
+                src={`/slots/${game.id}.png`} 
+                alt={game.title} 
+                className="slot-card-bg" 
+                onError={(e) => { e.target.style.display = 'none'; }} 
+              />
+              <div className="slot-card-overlay" />
+              
+              <div className="slot-card-content">
+                <h3>{game.title}</h3>
+                <p>{game.desc}</p>
+                <button className="btn btn-primary" style={{ marginTop: 15, background: game.color, color: '#111' }}>Play Now</button>
               </div>
-              <h3>{game.title}</h3>
-              <p>{game.desc}</p>
-              <button className="btn btn-primary" style={{ marginTop: 15, background: game.color, color: '#111' }}>Play Now</button>
             </motion.div>
           ))}
         </div>

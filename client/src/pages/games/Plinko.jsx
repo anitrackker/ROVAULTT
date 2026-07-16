@@ -112,7 +112,7 @@ export const Plinko = () => {
       const numPegsLastRow = rows + 2;
       const rowWidth = (numPegsLastRow - 1) * spacingX;
       const startX = (W - rowWidth) / 2;
-      const bx = startX + i * spacingX;
+      const bx = startX + (i + 0.5) * spacingX; // Align perfectly in the gaps between pegs
       const bw = spacingX;
       return { x: bx - bw / 2, y: bucketY, w: bw, h: padBot - 10, mult, color: getMultColor(mult) };
     });

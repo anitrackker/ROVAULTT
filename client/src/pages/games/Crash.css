@@ -194,9 +194,9 @@
 }
 
 @keyframes idle-bob {
-  0% { transform: translate3d(40px, calc(100% - 40px), 0) translate(-50%, -50%) rotate(45deg); }
-  50% { transform: translate3d(40px, calc(100% - 48px), 0) translate(-50%, -50%) rotate(45deg); }
-  100% { transform: translate3d(40px, calc(100% - 40px), 0) translate(-50%, -50%) rotate(45deg); }
+  0% { transform: translate3d(150px, calc(100% - 150px), 0) translate(-50%, -50%) rotate(45deg); }
+  50% { transform: translate3d(150px, calc(100% - 158px), 0) translate(-50%, -50%) rotate(45deg); }
+  100% { transform: translate3d(150px, calc(100% - 150px), 0) translate(-50%, -50%) rotate(45deg); }
 }
 
 .idle-bob {

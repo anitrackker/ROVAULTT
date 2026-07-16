@@ -86,8 +86,8 @@ export const Crash = () => {
     const scaleX = Math.min(1, targetX / Math.max(1, x));
     const scaleY = Math.min(1, targetY / Math.max(1, y));
 
-    const paddingX = 40;
-    const paddingY = 40;
+    const paddingX = 150;
+    const paddingY = 150;
 
     // The thick glowing curve is removed as requested by the user.
     // We just keep the camera scaling math and skip drawing the line.
@@ -508,11 +508,11 @@ export const Crash = () => {
               position: 'absolute',
               top: 0,
               left: 0,
-              width: '120px', // 300% increase from old small size
-              height: '120px',
+              width: '300px', // 250% increase
+              height: '300px',
               zIndex: 5,
               display: gameState === 'crashed' ? 'none' : 'block',
-              transform: 'translate3d(40px, calc(100% - 40px), 0) translate(-50%, -50%) rotate(45deg)' // Default wait position
+              transform: 'translate3d(150px, calc(100% - 150px), 0) translate(-50%, -50%) rotate(45deg)' // Default wait position
             }}
           >
             <img 
