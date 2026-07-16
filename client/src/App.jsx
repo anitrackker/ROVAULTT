@@ -14,6 +14,7 @@ import { Settings } from './pages/Settings';
 import { Rewards } from './pages/Rewards';
 import { Vip } from './pages/Vip';
 import { ComingSoon } from './pages/ComingSoon';
+import { Affiliates } from './pages/Affiliates';
 import { Leaderboard } from './pages/Leaderboard';
 import { Sportsbook } from './pages/sports/Sportsbook';
 import AdminApp from './pages/admin/App';
@@ -44,7 +45,7 @@ function App() {
         <Route path="/coinflip" element={<Coinflip />} />
         <Route path="/settings" element={<Settings />} />
         {/* Extras */}
-        <Route path="/affiliates" element={<ComingSoon />} />
+        <Route path="/affiliates" element={<Affiliates />} />
         <Route path="/rewards" element={<Rewards />} />
         <Route path="/leaderboards" element={<Leaderboard />} />
         <Route path="/bonus" element={<ComingSoon />} />
