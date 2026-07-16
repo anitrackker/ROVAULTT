@@ -503,7 +503,7 @@ export const Crash = () => {
           {/* ROCKET DOM ELEMENT */}
           <div 
             ref={rocketRef}
-            className={`premium-rocket ${gameState === 'waiting' ? 'idle-bob' : ''}`}
+            className="premium-rocket"
             style={{
               position: 'absolute',
               top: 0,
@@ -512,26 +512,28 @@ export const Crash = () => {
               height: '300px',
               zIndex: 5,
               display: gameState === 'crashed' ? 'none' : 'block',
-              transform: 'translate3d(150px, calc(100% - 150px), 0) translate(-50%, -50%) rotate(45deg)' // Default wait position
+              transform: 'translate3d(150px, 150px, 0) translate(-50%, -50%) rotate(45deg)' // Fallback, will be instantly overwritten by drawGraph
             }}
           >
-            <img 
-               src="/rocket.png" 
-               alt="Rocket" 
-               style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'rotate(45deg)' }}
-               onError={(e) => {
-                 // Fallback if image not uploaded yet
-                 e.target.style.display = 'none';
-                 e.target.nextSibling.style.display = 'block';
-               }}
-            />
-            {/* Fallback SVG if image is missing */}
-            <svg style={{ display: 'none', width: '100%', height: '100%' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-              <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-              <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
-              <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
-            </svg>
+            <div className={`rocket-inner ${gameState === 'waiting' ? 'idle-bob' : ''}`} style={{ width: '100%', height: '100%' }}>
+              <img 
+                 src="/rocket.png" 
+                 alt="Rocket" 
+                 style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'rotate(45deg)' }}
+                 onError={(e) => {
+                   // Fallback if image not uploaded yet
+                   e.target.style.display = 'none';
+                   e.target.nextSibling.style.display = 'block';
+                 }}
+              />
+              {/* Fallback SVG if image is missing */}
+              <svg style={{ display: 'none', width: '100%', height: '100%', transform: 'rotate(45deg)' }} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+              </svg>
+            </div>
           </div>
 
           {gameState === 'crashed' && (

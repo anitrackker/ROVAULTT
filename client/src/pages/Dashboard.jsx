@@ -12,11 +12,9 @@ const GameCard = ({ title, badge, bgImage, path }) => {
   const navigate = useNavigate();
 
   return (
-    <motion.div 
+    <div 
       className="game-card-image"
       onClick={() => navigate(path)}
-      whileHover={{ y: -5, scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       <div className="gc-title-overlay">{title.toUpperCase()}</div>
@@ -29,7 +27,7 @@ const GameCard = ({ title, badge, bgImage, path }) => {
       
       {/* Hover glow effect */}
       <div className="gc-glow" />
-    </motion.div>
+    </div>
   );
 };
 
