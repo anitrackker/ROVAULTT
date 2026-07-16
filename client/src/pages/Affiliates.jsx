@@ -8,7 +8,9 @@ export const Affiliates = () => {
   const [affiliateData, setAffiliateData] = useState({ code: null, referredBy: null, earnings: 0, referrals: 0, deposits: 0, wagered: 0 });
   const [affiliateCodeInput, setAffiliateCodeInput] = useState('');
   
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000/api'
+    : 'https://rovault.onrender.com/api';
 
   useEffect(() => {
     if (!user || !user.name) return;
@@ -33,7 +35,9 @@ export const Affiliates = () => {
       } else {
         alert(data.error);
       }
-    } catch(e) {}
+    } catch(e) {
+      alert("Failed to connect to the server. Please try again.");
+    }
   };
   return (
     <div className="affiliates-page">
@@ -92,7 +96,7 @@ export const Affiliates = () => {
               <p>Claim your unique word. Make it catchy. Once claimed, it's yours forever.</p>
               <div className="pc-input-group">
                 <input type="text" placeholder="e.g. ROVAULT2026" value={affiliateCodeInput} onChange={e => setAffiliateCodeInput(e.target.value.toUpperCase())} maxLength={20} />
-                <button className="rc-btn glow-btn" onClick={createAffiliateCode}>Claim Code</button>
+                <button className="rc-btn glow-btn" onClick={createAffiliateCode}>Create Code</button>
               </div>
             </div>
           </div>
