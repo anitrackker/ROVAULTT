@@ -173,6 +173,8 @@ export const DepositModal = () => {
   const redeemPromo = async () => {
     if (!promoCode.trim() || !user) return;
     setPromoState('loading');
+    
+    // First try admin promo code
     try {
       const res  = await fetch(`${API_URL}/promo/redeem`, {
         method: 'POST',
@@ -180,11 +182,36 @@ export const DepositModal = () => {
         body: JSON.stringify({ username: user.name.toLowerCase(), code: promoCode.trim() }),
       });
       const data = await res.json();
+      
       if (data.success) {
         setBalance(data.newBalance);
         setPromoState('success');
         setPromoMsg(`+${formatPts(data.vault)} VAULT added! (${data.description})`);
         confetti({ particleCount: 120, spread: 70, origin: { y: 0.5 }, colors: ['#fbbf24','#4ade80','#60a5fa'] });
+        setPromoCode('');
+        return;
+      } else if (data.error !== 'Invalid promo code') {
+        // If it's a specific error like "Already redeemed", show it
+        setPromoState('error');
+        setPromoMsg(data.error);
+        return;
+      }
+    } catch {}
+
+    // If promo failed or was invalid, try affiliate code
+    try {
+      const res = await fetch(`${API_URL}/affiliate/claim`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user.name, code: promoCode.trim() })
+      });
+      const data = await res.json();
+      
+      if (data.success) {
+        setBalance(data.newBalance);
+        setPromoState('success');
+        setPromoMsg(data.message);
+        confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
         setPromoCode('');
       } else {
         setPromoState('error');
@@ -294,7 +321,7 @@ export const DepositModal = () => {
                   <div className="dm-promo-section">
                     <div className="dm-promo-header">
                       <Tag size={15} />
-                      <span>Promo Code</span>
+                      <span>Promo / Referral Code</span>
                     </div>
                     <div className="dm-promo-row">
                       <input

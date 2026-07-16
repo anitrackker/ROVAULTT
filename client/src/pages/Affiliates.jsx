@@ -5,9 +5,8 @@ import './Affiliates.css';
 
 export const Affiliates = () => {
   const { user, updateBalance } = useStore();
-  const [affiliateData, setAffiliateData] = useState({ code: null, referredBy: null, earnings: 0, referrals: 0 });
+  const [affiliateData, setAffiliateData] = useState({ code: null, referredBy: null, earnings: 0, referrals: 0, deposits: 0, wagered: 0 });
   const [affiliateCodeInput, setAffiliateCodeInput] = useState('');
-  const [claimCodeInput, setClaimCodeInput] = useState('');
   
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -36,27 +35,6 @@ export const Affiliates = () => {
       }
     } catch(e) {}
   };
-
-  const claimAffiliateCode = async () => {
-    if (!claimCodeInput) return;
-    try {
-      const res = await fetch(`${API_URL}/affiliate/claim`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: user.name, code: claimCodeInput })
-      });
-      const data = await res.json();
-      if (data.success) {
-        setAffiliateData(prev => ({ ...prev, referredBy: claimCodeInput }));
-        updateBalance(5000);
-        confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
-        alert(data.message);
-      } else {
-        alert(data.error);
-      }
-    } catch(e) {}
-  };
-
   return (
     <div className="affiliates-page">
       <div className="partner-header">
@@ -81,8 +59,18 @@ export const Affiliates = () => {
                 <div className="pd-stat-value">{affiliateData.referrals}</div>
                 <div className="pd-stat-sub">Active Players</div>
               </div>
+              <div className="pd-stat-card">
+                <div className="pd-stat-label">Total Deposited</div>
+                <div className="pd-stat-value">${(affiliateData.deposits || 0).toFixed(2)}</div>
+                <div className="pd-stat-sub">By Referrals</div>
+              </div>
+              <div className="pd-stat-card">
+                <div className="pd-stat-label">Total Gambled</div>
+                <div className="pd-stat-value">🪙 {formatPts(affiliateData.wagered || 0)}</div>
+                <div className="pd-stat-sub">By Referrals</div>
+              </div>
               <div className="pd-stat-card highlight">
-                <div className="pd-stat-label">Total Earnings</div>
+                <div className="pd-stat-label">Your Earnings</div>
                 <div className="pd-stat-value">+{formatPts(affiliateData.earnings)}</div>
                 <div className="pd-stat-sub">Vault Bucks</div>
               </div>
@@ -108,17 +96,6 @@ export const Affiliates = () => {
               </div>
             </div>
           </div>
-        )}
-
-        {!affiliateData.referredBy && (
-          <div className="partner-claim">
-            <h3>Were you referred by a Partner?</h3>
-            <div className="pc-input-group">
-              <input type="text" placeholder="Enter their code..." value={claimCodeInput} onChange={e => setClaimCodeInput(e.target.value.toUpperCase())} />
-              <button className="rc-btn outline-btn" onClick={claimAffiliateCode}>Claim 5000 VAULT Bonus</button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

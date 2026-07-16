@@ -372,8 +372,9 @@ app.post('/api/wallet/check-deposits', async (c) => {
               const affCut = Math.floor(vaultEarned * 0.25); // 25% of the deposit!
               
               // Update referrer's affiliate stats
-              if (!affData.users[referrerUsername]) affData.users[referrerUsername] = { code: null, referredBy: null, earnings: 0, referrals: 0 };
+              if (!affData.users[referrerUsername]) affData.users[referrerUsername] = { code: null, referredBy: null, earnings: 0, referrals: 0, deposits: 0, wagered: 0 };
               affData.users[referrerUsername].earnings += affCut;
+              affData.users[referrerUsername].deposits = (affData.users[referrerUsername].deposits || 0) + totalUsdCredited;
               writeAffiliates(affData);
 
               // Give referrer the vault cut
@@ -461,6 +462,23 @@ app.post('/api/users', async (c) => {
     };
     
     const { error } = await supabase.from('users').upsert(payload);
+    
+    // Process affiliate wagers
+    if (addedWager > 0) {
+      try {
+        const affData = readAffiliates();
+        const myAff = affData.users[username];
+        if (myAff && myAff.referredBy) {
+          const referrerUsername = affData.codes[myAff.referredBy];
+          if (referrerUsername) {
+            if (!affData.users[referrerUsername]) affData.users[referrerUsername] = { code: null, referredBy: null, earnings: 0, referrals: 0, deposits: 0, wagered: 0 };
+            affData.users[referrerUsername].wagered = (affData.users[referrerUsername].wagered || 0) + addedWager;
+            writeAffiliates(affData);
+          }
+        }
+      } catch(e){}
+    }
+
     if (error) {
       console.warn('Upsert failed (trying fallback without weeklyWagered/avatarUrl):', error.message);
       const fallbackPayload = {
