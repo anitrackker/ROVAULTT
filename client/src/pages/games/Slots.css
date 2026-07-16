@@ -149,8 +149,10 @@
 
 /* ── SLOT MACHINE CABINET ── */
 .slot-machine-cabinet {
-  background: linear-gradient(180deg, #1c2338 0%, #121626 100%);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(20, 25, 40, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 16px;
   padding: 15px;
   width: 100%;
