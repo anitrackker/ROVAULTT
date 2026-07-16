@@ -663,21 +663,33 @@ export const Sportsbook = () => {
     
     if (!chartHistoryRef.current[key]) {
       const data = [];
-      let prices = currentPrices.map(curr => Math.max(1, Math.min(99, curr + (Math.random() - 0.5) * 10)));
+      const numPoints = 80; // Much longer history so it's not vertically squished
       
-      const sum = prices.reduce((a, b) => a + b, 0);
+      let prices = currentPrices.map(curr => {
+        // If it's a blowout (99% or 1%), simulate a "comeback" or "choke" by starting the odds inversed!
+        if (curr >= 85) return 20 + Math.random() * 15; // Winner started as underdog
+        if (curr <= 15) return 50 + Math.random() * 20; // Loser started as favorite
+        return (100 / currentPrices.length) + (Math.random() - 0.5) * 15;
+      });
+      
+      let sum = prices.reduce((a, b) => a + b, 0);
       prices = prices.map(p => Number(((p / sum) * 100).toFixed(2)));
 
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < numPoints; i++) {
         data.push({ time: i, prices: [...prices] });
+        
+        const progress = i / numPoints;
+        // Exponentially pull towards the real current prices as time goes on
+        const pullFactor = 0.01 + (Math.pow(progress, 3) * 0.25);
+        
         prices = prices.map((p, idx) => {
-          const move = (currentPrices[idx] - p) * 0.15 + (Math.random() - 0.5) * 3;
-          return Math.max(1, Math.min(99, p + move));
+          const move = (currentPrices[idx] - p) * pullFactor + (Math.random() - 0.5) * 6;
+          return Math.max(0.5, Math.min(99.5, p + move));
         });
         const stepSum = prices.reduce((a, b) => a + b, 0);
         prices = prices.map(p => Number(((p / stepSum) * 100).toFixed(2)));
       }
-      data.push({ time: 20, prices: currentPrices });
+      data.push({ time: numPoints, prices: currentPrices });
       chartHistoryRef.current[key] = data;
     } else {
       const history = [...chartHistoryRef.current[key]];
