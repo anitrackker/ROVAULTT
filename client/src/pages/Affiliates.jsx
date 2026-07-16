@@ -96,6 +96,7 @@ export const Affiliates = () => {
               </div>
             </div>
           </div>
+        )}
       </div>
     </div>
   );
