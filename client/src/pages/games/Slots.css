@@ -129,6 +129,21 @@
   overflow: hidden;
 }
 
+.slots-in-game-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+.slots-in-game-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at center, rgba(10,12,22,0.2) 0%, rgba(10,12,22,0.95) 100%);
+  z-index: 2;
+}
+
 .slots-title {
   display: flex;
   align-items: center;
@@ -144,7 +159,7 @@
   justify-content: center;
   padding: 40px;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 /* ── SLOT MACHINE CABINET ── */

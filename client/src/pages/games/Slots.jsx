@@ -324,12 +324,14 @@ export const Slots = () => {
         className="game-viewport slots-viewport" 
         style={{ 
           border: `1px solid ${activeGameInfo.color}33`,
-          backgroundImage: `radial-gradient(circle at center, rgba(10,12,22,0.2) 0%, rgba(10,12,22,0.95) 100%), url(/slots/${activeGameId}.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
           backgroundColor: '#0a0c16'
         }}
       >
+        <div 
+          className="slots-in-game-bg" 
+          style={{ backgroundImage: `url('/slots/${activeGameId}.png')` }} 
+        />
+        <div className="slots-in-game-overlay" />
 
         <div className="viewport-top-overlay">
           <div className="slots-title" style={{ color: activeGameInfo.color }}>
