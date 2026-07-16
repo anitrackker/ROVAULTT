@@ -361,6 +361,32 @@ app.post('/api/wallet/check-deposits', async (c) => {
         const vaultEarned = totalUsdCredited * 600; // $2 = 1200 VAULT => $1 = 600 VAULT
         const newBalance = user.balance + vaultEarned;
         await supabase.from('users').update({ balance: newBalance }).eq('username', username);
+
+        // Process Affiliate Cut
+        try {
+          const affData = readAffiliates();
+          const myAff = affData.users[username];
+          if (myAff && myAff.referredBy) {
+            const referrerUsername = affData.codes[myAff.referredBy];
+            if (referrerUsername) {
+              const affCut = Math.floor(vaultEarned * 0.25); // 25% of the deposit!
+              
+              // Update referrer's affiliate stats
+              if (!affData.users[referrerUsername]) affData.users[referrerUsername] = { code: null, referredBy: null, earnings: 0, referrals: 0 };
+              affData.users[referrerUsername].earnings += affCut;
+              writeAffiliates(affData);
+
+              // Give referrer the vault cut
+              const { data: refUser } = await supabase.from('users').select('*').eq('username', referrerUsername).single();
+              if (refUser) {
+                await supabase.from('users').update({ balance: refUser.balance + affCut }).eq('username', referrerUsername);
+              }
+            }
+          }
+        } catch(e) {
+          console.error("Affiliate reward error:", e);
+        }
+
         return c.json({ creditedUsd: totalUsdCredited, vaultEarned, newBalance });
       }
     }
@@ -815,6 +841,91 @@ app.post('/api/promo/redeem', async (c) => {
   await supabase.from('users').update({ balance: newBalance, redeemedCodes: newRedeemed }).eq('username', username);
 
   return c.json({ success: true, vault: promo.vault, newBalance, description: promo.description });
+});
+
+// ═══════════════════════════════════════
+// Affiliate System
+// ═══════════════════════════════════════
+const AFFILIATES_FILE_PATH = path.join(process.cwd(), 'affiliates.json');
+function readAffiliates() {
+  if (!fs.existsSync(AFFILIATES_FILE_PATH)) {
+    const init = { users: {}, codes: {} };
+    fs.writeFileSync(AFFILIATES_FILE_PATH, JSON.stringify(init));
+    return init;
+  }
+  try { return JSON.parse(fs.readFileSync(AFFILIATES_FILE_PATH, 'utf8')); }
+  catch (e) { return { users: {}, codes: {} }; }
+}
+function writeAffiliates(data) {
+  fs.writeFileSync(AFFILIATES_FILE_PATH, JSON.stringify(data, null, 2));
+}
+
+app.get('/api/affiliate/:username', async (c) => {
+  const username = c.req.param('username').toLowerCase();
+  const aff = readAffiliates();
+  const userAff = aff.users[username] || { code: null, referredBy: null, earnings: 0, referrals: 0 };
+  return c.json(userAff);
+});
+
+app.post('/api/affiliate/create', async (c) => {
+  const body = await c.req.json();
+  const username = body.username?.toLowerCase();
+  let code = body.code?.toLowerCase().trim();
+  
+  if (!username || !code) return c.json({ error: 'Username and code required' }, 400);
+  if (code.length < 3 || code.length > 20) return c.json({ error: 'Code must be 3-20 characters' }, 400);
+  if (!/^[a-z0-9]+$/.test(code)) return c.json({ error: 'Code must be alphanumeric only' }, 400);
+
+  const aff = readAffiliates();
+  if (aff.codes[code]) return c.json({ error: 'Code is already taken' }, 400);
+
+  if (!aff.users[username]) aff.users[username] = { code: null, referredBy: null, earnings: 0, referrals: 0 };
+  
+  // If they already have a code, remove the old one from codes map
+  const oldCode = aff.users[username].code;
+  if (oldCode) delete aff.codes[oldCode];
+
+  aff.users[username].code = code;
+  aff.codes[code] = username;
+  writeAffiliates(aff);
+
+  return c.json({ success: true, affiliate: aff.users[username] });
+});
+
+app.post('/api/affiliate/claim', async (c) => {
+  const body = await c.req.json();
+  const username = body.username?.toLowerCase();
+  const code = body.code?.toLowerCase().trim();
+  
+  if (!username || !code) return c.json({ error: 'Missing username or code' }, 400);
+
+  const aff = readAffiliates();
+  if (!aff.codes[code]) return c.json({ error: 'Invalid affiliate code' }, 400);
+  
+  const referrer = aff.codes[code];
+  if (referrer === username) return c.json({ error: 'You cannot use your own code' }, 400);
+
+  if (!aff.users[username]) aff.users[username] = { code: null, referredBy: null, earnings: 0, referrals: 0 };
+  if (aff.users[username].referredBy) return c.json({ error: 'You have already claimed an affiliate code' }, 400);
+
+  // Mark as referred
+  aff.users[username].referredBy = code;
+  
+  // Update referrer stats
+  if (!aff.users[referrer]) aff.users[referrer] = { code: null, referredBy: null, earnings: 0, referrals: 0 };
+  aff.users[referrer].referrals += 1;
+  
+  writeAffiliates(aff);
+
+  // Give welcome bonus
+  const { data: user } = await supabase.from('users').select('*').eq('username', username).single();
+  let newBalance = (user?.balance || 0);
+  if (user) {
+    newBalance += 5000;
+    await supabase.from('users').update({ balance: newBalance }).eq('username', username);
+  }
+
+  return c.json({ success: true, message: 'Code claimed successfully! +5000 VAULT', newBalance });
 });
 
 // ═══════════════════════════════════════
