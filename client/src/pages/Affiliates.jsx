@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useStore, formatPts } from '../store/useStore';
-import confetti from 'canvas-confetti';
+import { Users, DollarSign, Coins, TrendingUp, Copy, CheckCircle2, ChevronRight, Award, BarChart2, Link as LinkIcon } from 'lucide-react';
 import './Affiliates.css';
 
 export const Affiliates = () => {
-  const { user, updateBalance } = useStore();
+  const { user } = useStore();
   const [affiliateData, setAffiliateData] = useState({ code: null, referredBy: null, earnings: 0, referrals: 0, deposits: 0, wagered: 0 });
   const [affiliateCodeInput, setAffiliateCodeInput] = useState('');
+  const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3000/api'
@@ -22,6 +24,7 @@ export const Affiliates = () => {
 
   const createAffiliateCode = async () => {
     if (!affiliateCodeInput) return;
+    setIsLoading(true);
     try {
       const res = await fetch(`${API_URL}/affiliate/create`, {
         method: 'POST',
@@ -31,77 +34,152 @@ export const Affiliates = () => {
       const data = await res.json();
       if (data.success) {
         setAffiliateData(prev => ({ ...prev, code: data.affiliate.code }));
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       } else {
         alert(data.error);
       }
     } catch(e) {
       alert("Failed to connect to the server. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getTierInfo = (referrals) => {
+    if (referrals >= 100) return { name: 'Diamond', next: null, min: 100, color: '#38bdf8' };
+    if (referrals >= 25) return { name: 'Gold', next: 'Diamond', min: 25, max: 100, color: '#fbbf24' };
+    if (referrals >= 5) return { name: 'Silver', next: 'Gold', min: 5, max: 25, color: '#94a3b8' };
+    return { name: 'Bronze', next: 'Silver', min: 0, max: 5, color: '#b45309' };
+  };
+
+  const tier = getTierInfo(affiliateData.referrals);
+  const progressPercent = tier.next ? ((affiliateData.referrals - tier.min) / (tier.max - tier.min)) * 100 : 100;
+
   return (
     <div className="affiliates-page">
-      <div className="partner-header">
-        <h2>RoVault Partner Program</h2>
-        <p>Earn a massive 25% lifetime revenue share from everyone you refer to RoVault.</p>
+      <div className="aff-header">
+        <div className="aff-header-content">
+          <h1>Affiliate Dashboard</h1>
+          <p>Invite friends and earn a passive <strong>25% Revenue Share</strong> on all their deposits.</p>
+        </div>
       </div>
 
-      <div className="partner-section">
-        {affiliateData.code ? (
-          <div className="partner-dashboard">
-            <div className="pd-stats-grid">
-              <div className="pd-stat-card">
-                <div className="pd-stat-label">Your Custom Code</div>
-                <div className="pd-stat-value code">{affiliateData.code.toUpperCase()}</div>
-                <button className="rc-btn copy-btn" onClick={() => {
-                  navigator.clipboard.writeText(affiliateData.code);
-                  alert('Copied to clipboard!');
-                }}>Copy Code</button>
+      {!affiliateData.code ? (
+        <div className="aff-create-section">
+          <div className="aff-create-card">
+            <div className="aff-create-icon">
+              <LinkIcon size={32} />
+            </div>
+            <h2>Create Your Custom Code</h2>
+            <p>Choose a unique referral code to start earning lifetime commissions.</p>
+            <div className="aff-input-wrapper">
+              <span className="aff-prefix">rovaultt.com/?r=</span>
+              <input 
+                type="text" 
+                placeholder="YOURCODE" 
+                value={affiliateCodeInput} 
+                onChange={e => setAffiliateCodeInput(e.target.value.toUpperCase())} 
+                maxLength={20} 
+              />
+            </div>
+            <button 
+              className="aff-btn-primary" 
+              onClick={createAffiliateCode}
+              disabled={isLoading || !affiliateCodeInput}
+            >
+              {isLoading ? 'Creating...' : 'Create Code'}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="aff-dashboard">
+          
+          <div className="aff-code-banner">
+            <div className="aff-code-info">
+              <span className="aff-label">Your Referral Code</span>
+              <div className="aff-code-value">{affiliateData.code.toUpperCase()}</div>
+            </div>
+            <div className="aff-code-actions">
+              <button className="aff-btn-secondary" onClick={() => copyToClipboard(affiliateData.code.toUpperCase())}>
+                {copied ? <CheckCircle2 size={16} color="#10b981" /> : <Copy size={16} />}
+                {copied ? 'Copied' : 'Copy Code'}
+              </button>
+              <button className="aff-btn-primary" onClick={() => copyToClipboard(`https://rovaultt.vercel.app/?r=${affiliateData.code}`)}>
+                <LinkIcon size={16} />
+                Copy Link
+              </button>
+            </div>
+          </div>
+
+          <div className="aff-stats-grid">
+            <div className="aff-stat-card">
+              <div className="aff-stat-header">
+                <span className="aff-stat-title">Total Referrals</span>
+                <Users size={18} className="aff-stat-icon" style={{color: '#8b5cf6'}} />
               </div>
-              <div className="pd-stat-card">
-                <div className="pd-stat-label">Total Referrals</div>
-                <div className="pd-stat-value">{affiliateData.referrals}</div>
-                <div className="pd-stat-sub">Active Players</div>
+              <div className="aff-stat-value">{affiliateData.referrals}</div>
+              <div className="aff-stat-desc">Active users invited</div>
+            </div>
+
+            <div className="aff-stat-card">
+              <div className="aff-stat-header">
+                <span className="aff-stat-title">Total Deposited</span>
+                <DollarSign size={18} className="aff-stat-icon" style={{color: '#10b981'}} />
               </div>
-              <div className="pd-stat-card">
-                <div className="pd-stat-label">Total Deposited</div>
-                <div className="pd-stat-value">${(affiliateData.deposits || 0).toFixed(2)}</div>
-                <div className="pd-stat-sub">By Referrals</div>
+              <div className="aff-stat-value">${(affiliateData.deposits || 0).toFixed(2)}</div>
+              <div className="aff-stat-desc">Generated by referrals</div>
+            </div>
+
+            <div className="aff-stat-card">
+              <div className="aff-stat-header">
+                <span className="aff-stat-title">Total Gambled</span>
+                <Coins size={18} className="aff-stat-icon" style={{color: '#f59e0b'}} />
               </div>
-              <div className="pd-stat-card">
-                <div className="pd-stat-label">Total Gambled</div>
-                <div className="pd-stat-value">🪙 {formatPts(affiliateData.wagered || 0)}</div>
-                <div className="pd-stat-sub">By Referrals</div>
+              <div className="aff-stat-value">{formatPts(affiliateData.wagered || 0)}</div>
+              <div className="aff-stat-desc">Vault wagered by referrals</div>
+            </div>
+
+            <div className="aff-stat-card highlight">
+              <div className="aff-stat-header">
+                <span className="aff-stat-title">Total Earnings</span>
+                <TrendingUp size={18} className="aff-stat-icon" style={{color: '#3b82f6'}} />
               </div>
-              <div className="pd-stat-card highlight">
-                <div className="pd-stat-label">Your Earnings</div>
-                <div className="pd-stat-value">+{formatPts(affiliateData.earnings)}</div>
-                <div className="pd-stat-sub">Vault Bucks</div>
+              <div className="aff-stat-value" style={{color: '#3b82f6'}}>+{formatPts(affiliateData.earnings)}</div>
+              <div className="aff-stat-desc">Lifetime Vault earned</div>
+            </div>
+          </div>
+
+          <div className="aff-tier-section">
+            <div className="aff-tier-header">
+              <div className="aff-tier-title">
+                <Award size={20} style={{color: tier.color}} />
+                <h3>{tier.name} Tier</h3>
               </div>
+              <span className="aff-tier-rate">25% Commission Rate</span>
             </div>
             
-            <div className="pd-tier-banner">
-              <div className="tier-icon">{affiliateData.referrals >= 100 ? '💎' : affiliateData.referrals >= 25 ? '🥇' : affiliateData.referrals >= 5 ? '🥈' : '🥉'}</div>
-              <div className="tier-info">
-                <h3>{affiliateData.referrals >= 100 ? 'Diamond' : affiliateData.referrals >= 25 ? 'Gold' : affiliateData.referrals >= 5 ? 'Silver' : 'Bronze'} Partner Status</h3>
-                <p>You currently receive 25% of all crypto deposits made by your referrals.</p>
+            <div className="aff-tier-progress-container">
+              <div className="aff-tier-progress-bar">
+                <div className="aff-tier-progress-fill" style={{ width: `${progressPercent}%`, backgroundColor: tier.color }}></div>
+              </div>
+              <div className="aff-tier-labels">
+                <span>{affiliateData.referrals} Referrals</span>
+                {tier.next ? (
+                  <span>{tier.max} needed for {tier.next}</span>
+                ) : (
+                  <span>Max Tier Reached!</span>
+                )}
               </div>
             </div>
           </div>
-        ) : (
-          <div className="partner-create">
-            <div className="pc-glow" />
-            <div className="pc-content">
-              <h3>Create Your Partner Code</h3>
-              <p>Claim your unique word. Make it catchy. Once claimed, it's yours forever.</p>
-              <div className="pc-input-group">
-                <input type="text" placeholder="e.g. ROVAULT2026" value={affiliateCodeInput} onChange={e => setAffiliateCodeInput(e.target.value.toUpperCase())} maxLength={20} />
-                <button className="rc-btn glow-btn" onClick={createAffiliateCode}>Create Code</button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+
+        </div>
+      )}
     </div>
   );
 };
