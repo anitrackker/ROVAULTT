@@ -160,7 +160,24 @@ export const Sportsbook = () => {
   const [activeTab, setActiveTab] = useState('worldcup');
   const [selectedMarketIdx, setSelectedMarketIdx] = useState(0);
   const [dbBets, setDbBets] = useState([]);
+  const [realChartHistory, setRealChartHistory] = useState({});
   const chartHistoryRef = useRef({});
+
+  useEffect(() => {
+    if (!selectedMatch || selectedMatch.isWorldCup) return;
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`${API_URL}/sports/history/${selectedMatch.id}`);
+        const data = await res.json();
+        if (data && data.history) {
+          setRealChartHistory(prev => ({ ...prev, ...data.history }));
+        }
+      } catch (e) {}
+    };
+    fetchHistory();
+    const intv = setInterval(fetchHistory, 60000);
+    return () => clearInterval(intv);
+  }, [selectedMatch]);
 
   const fetchDbBets = useCallback(async () => {
     if (!user || !user.name) return;
@@ -695,6 +712,12 @@ export const Sportsbook = () => {
         }
         data.push({ time: maxMins + 1, prices: currentPrices });
       } else {
+        // Check if we have REAL backend scraped history
+        const realHistoryKey = `pm-${selectedMatch.id}-${activeMarket.id}`;
+        if (realChartHistory[realHistoryKey] && realChartHistory[realHistoryKey].length > 1) {
+          return realChartHistory[realHistoryKey].map((pt, idx) => ({ time: idx, prices: pt.prices }));
+        }
+
         const numPoints = 80; // Much longer history so it's not vertically squished
         
         let prices = currentPrices.map(curr => {
@@ -725,6 +748,13 @@ export const Sportsbook = () => {
       }
       chartHistoryRef.current[key] = data;
     } else {
+      if (!selectedMatch.isWorldCup) {
+        const realHistoryKey = `pm-${selectedMatch.id}-${activeMarket.id}`;
+        if (realChartHistory[realHistoryKey] && realChartHistory[realHistoryKey].length > 1) {
+          return realChartHistory[realHistoryKey].map((pt, idx) => ({ time: idx, prices: pt.prices }));
+        }
+      }
+
       const history = [...chartHistoryRef.current[key]];
       const lastPoint = history[history.length - 1];
       const changed = currentPrices.some((p, idx) => lastPoint.prices?.[idx] !== p);

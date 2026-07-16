@@ -124,6 +124,69 @@ app.get('/api/roblox/avatar-image/:username', async (c) => {
 });
 
 // ═══════════════════════════════════════
+// Dedicated Historical Market Scraper
+// ═══════════════════════════════════════
+const HISTORY_FILE_PATH = path.join(process.cwd(), 'market_history.json');
+
+function loadMarketHistory() {
+  if (!fs.existsSync(HISTORY_FILE_PATH)) return {};
+  try { return JSON.parse(fs.readFileSync(HISTORY_FILE_PATH, 'utf8')); }
+  catch (e) { return {}; }
+}
+
+function saveMarketHistory(history) {
+  try { fs.writeFileSync(HISTORY_FILE_PATH, JSON.stringify(history)); } catch (e) {}
+}
+
+setInterval(async () => {
+  try {
+    const res = await fetch('https://gamma-api.polymarket.com/events?closed=false&limit=100');
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+
+    const history = loadMarketHistory();
+    const timestamp = Date.now();
+    let updated = false;
+
+    data.forEach(ev => {
+      if (!ev.markets) return;
+      ev.markets.forEach(m => {
+        if (!m.outcomePrices) return;
+        try {
+          const prices = JSON.parse(m.outcomePrices).map(p => Number((parseFloat(p) * 100).toFixed(2)));
+          const key = `pm-${ev.id}-${m.id}`;
+          if (!history[key]) history[key] = [];
+          
+          const lastPoint = history[key][history[key].length - 1];
+          if (!lastPoint || JSON.stringify(lastPoint.prices) !== JSON.stringify(prices)) {
+            history[key].push({ time: timestamp, prices });
+            // Keep last 100 real data points
+            if (history[key].length > 100) history[key].shift();
+            updated = true;
+          }
+        } catch(e){}
+      });
+    });
+
+    if (updated) saveMarketHistory(history);
+  } catch (e) {
+    console.error("Dedicated scraper error:", e);
+  }
+}, 60000); // Poll every minute
+
+app.get('/api/sports/history/:matchId', async (c) => {
+  const matchId = c.req.param('matchId');
+  const history = loadMarketHistory();
+  const matchHistory = {};
+  for (const key in history) {
+    if (key.includes(`-${matchId}-`)) {
+      matchHistory[key] = history[key];
+    }
+  }
+  return c.json({ history: matchHistory });
+});
+
+// ═══════════════════════════════════════
 // World Cup scoreboard proxy
 // ═══════════════════════════════════════
 app.get('/api/sports/worldcup', async (c) => {
